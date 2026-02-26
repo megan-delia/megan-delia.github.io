@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Megan Delia</title>
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c1: #ff4d6d;   /* coral-red */
+      --c2: #ff9a3c;   /* orange */
+      --c3: #ffe066;   /* yellow */
+      --c4: #06d6a0;   /* teal */
+      --c5: #4361ee;   /* blue */
+      --c6: #7b2d8b;   /* purple */
+      --dark: #1a1a2e;
+      --mid:  #16213e;
+      --card: #0f3460;
+      --text: #eaeaea;
+      --muted: #a0aec0;
+      --radius: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ──────────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── Hero ─────────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--mid) 50%, #0d1b4b 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* decorative blobs */
+    #hero::before, #hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    #hero::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--c1), var(--c6));
+      top: -150px; left: -150px;
+    }
+    #hero::after {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--c4), var(--c5));
+      bottom: -100px; right: -100px;
+    }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 700px; }
+
+    .hero-tag {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff 0%, var(--c3) 50%, var(--c2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-title span {
+      color: var(--c4);
+      font-weight: 600;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      color: #fff;
+    }
+
+    .btn-outline {
+      border: 2px solid var(--c4);
+      color: var(--c4);
+    }
+
+    /* ── Sections ─────────────────────────────────────────────────── */
+    section {
+      padding: 5rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--c1);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .section-title span {
+      background: linear-gradient(90deg, var(--c4), var(--c5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .divider {
+      width: 60px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      margin-bottom: 3rem;
+    }
+
+    /* ── About ────────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .about-avatar {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c5), var(--c6));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      margin: 0 auto;
+      box-shadow: 0 0 0 6px rgba(67,97,238,0.25), 0 0 0 12px rgba(123,45,139,0.1);
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 1.02rem;
+    }
+
+    .about-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+    }
+
+    .highlight-chip {
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+
+    /* ── Skills ───────────────────────────────────────────────────── */
+    #skills { background: var(--mid); }
+    #skills > * { max-width: 1000px; margin-left: auto; margin-right: auto; }
+    #skills section { background: none; padding: 5rem 2rem; }
+
+    .skills-section-wrap {
+      background: var(--mid);
+      padding: 5rem 0;
+    }
+
+    .skills-section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .skill-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    .skill-card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .skill-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .tag-red    { background: rgba(255,77,109,0.18); color: var(--c1); }
+    .tag-orange { background: rgba(255,154,60,0.18); color: var(--c2); }
+    .tag-yellow { background: rgba(255,224,102,0.18); color: var(--c3); }
+    .tag-teal   { background: rgba(6,214,160,0.18);  color: var(--c4); }
+    .tag-blue   { background: rgba(67,97,238,0.18);  color: #818cf8; }
+    .tag-purple { background: rgba(123,45,139,0.18); color: #c084fc; }
+
+    /* ── Experience ───────────────────────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, var(--c1), var(--c5), var(--c4));
+      border-radius: 999px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 3rem 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.46rem; top: 0.4rem;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--c1);
+      border: 3px solid var(--dark);
+      box-shadow: 0 0 0 3px rgba(255,77,109,0.3);
+    }
+
+    .timeline-item:nth-child(2)::before { background: var(--c5); box-shadow: 0 0 0 3px rgba(67,97,238,0.3); }
+    .timeline-item:nth-child(3)::before { background: var(--c4); box-shadow: 0 0 0 3px rgba(6,214,160,0.3); }
+
+    .job-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .job-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .job-date {
+      font-size: 0.82rem;
+      color: var(--c2);
+      font-weight: 600;
+      background: rgba(255,154,60,0.12);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .job-company {
+      font-size: 0.92rem;
+      color: var(--c4);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .job-desc {
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    .job-desc ul {
+      padding-left: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .job-desc li { margin-bottom: 0.35rem; }
+
+    /* ── Education & Contact ──────────────────────────────────────── */
+    .edu-contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    @media (max-width: 640px) { .edu-contact-grid { grid-template-columns: 1fr; } }
+
+    .edu-item {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 1rem;
+    }
+
+    .edu-degree {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .edu-school { color: var(--c4); font-size: 0.9rem; font-weight: 600; }
+    .edu-year   { color: var(--muted); font-size: 0.82rem; margin-top: 0.25rem; }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 1rem 1.5rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .contact-link:hover {
+      transform: translateX(4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .contact-icon {
+      font-size: 1.5rem;
+      width: 2.5rem;
+      text-align: center;
+    }
+
+    .contact-info { flex: 1; }
+    .contact-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .contact-value { font-size: 0.95rem; font-weight: 600; }
+
+    /* ── Footer ───────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    footer span {
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">MD</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#edu-contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Available for new opportunities</div>
+      <h1 class="hero-name">Megan Delia</h1>
+      <p class="hero-title">
+        <span>[Your Job Title Here]</span> &nbsp;·&nbsp; [Industry / Specialty]
+      </p>
+      <p class="hero-desc">
+        Passionate professional with a drive for solving complex problems and
+        delivering impactful results. Bringing creativity, precision, and
+        enthusiasm to everything I do.
+      </p>
+      <div class="btn-row">
+        <a href="#experience" class="btn btn-primary">View My Work</a>
+        <a href="#edu-contact" class="btn btn-outline">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">Who I Am</p>
+    <h2 class="section-title">About <span>Me</span></h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-avatar">👩‍💼</div>
+      <div class="about-text">
+        <p>
+          Hi, I'm <strong>Megan</strong> — a dedicated professional based in [Your Location].
+          I have a passion for [your passion area] and a proven track record of
+          [key achievement or strength].
+        </p>
+        <p>
+          When I'm not working, you can find me [hobby 1], [hobby 2], or exploring
+          [interest]. I believe in continuous learning and bringing my whole self
+          to every challenge.
+        </p>
+        <p>
+          I'm currently [open to opportunities / focused on X] and excited about
+          the intersection of [area 1] and [area 2].
+        </p>
+        <div class="about-highlights">
+          <span class="highlight-chip">Problem Solver</span>
+          <span class="highlight-chip">Team Player</span>
+          <span class="highlight-chip">Detail-Oriented</span>
+          <span class="highlight-chip">Fast Learner</span>
+          <span class="highlight-chip">[Your Trait]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <div class="skills-section-wrap" id="skills">
+    <div class="skills-section-inner">
+      <p class="section-label">What I Do</p>
+      <h2 class="section-title">Skills &amp; <span>Expertise</span></h2>
+      <div class="divider"></div>
+      <div class="skill-categories">
+
+        <div class="skill-card">
+          <div class="skill-card-icon">💻</div>
+          <h3>Technical Skills</h3>
+          <div class="skill-tags">
+            <span class="skill-tag tag-blue">[Skill 1]</span>
+            <span class="skill-tag tag-blue">[Skill 2]</span>
+            <span class="skill-tag tag-blue">[Skill 3]</span>
+            <span class="skill-tag tag-blue">[Skill 4]</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-icon">📊</div>
+          <h3>Tools &amp; Software</h3>
+          <div class="skill-tags">
+            <span class="skill-tag tag-teal">Excel</span>
+            <span class="skill-tag tag-teal">Python</span>
+            <span class="skill-tag tag-teal">[Tool 3]</span>
+            <span class="skill-tag tag-teal">[Tool 4]</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-icon">🤝</div>
+          <h3>Soft Skills</h3>
+          <div class="skill-tags">
+            <span class="skill-tag tag-orange">Communication</span>
+            <span class="skill-tag tag-orange">Leadership</span>
+            <span class="skill-tag tag-orange">Collaboration</span>
+            <span class="skill-tag tag-orange">Adaptability</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-card-icon">🌐</div>
+          <h3>Domain Knowledge</h3>
+          <div class="skill-tags">
+            <span class="skill-tag tag-red">[Domain 1]</span>
+            <span class="skill-tag tag-red">[Domain 2]</span>
+            <span class="skill-tag tag-red">[Domain 3]</span>
+            <span class="skill-tag tag-purple">[Domain 4]</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label">Career</p>
+    <h2 class="section-title">Work <span>Experience</span></h2>
+    <div class="divider"></div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div class="job-title">[Your Current / Most Recent Job Title]</div>
+          <div class="job-date">Jan 2022 – Present</div>
+        </div>
+        <div class="job-company">Master Electronics · [City, State]</div>
+        <div class="job-desc">
+          <p>Brief description of your role and key responsibilities.</p>
+          <ul>
+            <li>Key achievement or responsibility #1</li>
+            <li>Key achievement or responsibility #2</li>
+            <li>Key achievement or responsibility #3</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div class="job-title">[Previous Job Title]</div>
+          <div class="job-date">Jun 2019 – Dec 2021</div>
+        </div>
+        <div class="job-company">[Previous Company] · [City, State]</div>
+        <div class="job-desc">
+          <p>Brief description of your role and key responsibilities.</p>
+          <ul>
+            <li>Key achievement or responsibility #1</li>
+            <li>Key achievement or responsibility #2</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="job-header">
+          <div class="job-title">[Earlier Role]</div>
+          <div class="job-date">May 2017 – May 2019</div>
+        </div>
+        <div class="job-company">[Company Name] · [City, State]</div>
+        <div class="job-desc">
+          <p>Brief description of your role and key responsibilities.</p>
+          <ul>
+            <li>Key achievement or responsibility #1</li>
+            <li>Key achievement or responsibility #2</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION & CONTACT -->
+  <section id="edu-contact">
+    <p class="section-label">Background &amp; Reach</p>
+    <h2 class="section-title">Education &amp; <span>Contact</span></h2>
+    <div class="divider"></div>
+    <div class="edu-contact-grid">
+
+      <!-- Education -->
+      <div>
+        <div class="edu-item">
+          <div class="edu-degree">[Your Degree] in [Field]</div>
+          <div class="edu-school">[University Name]</div>
+          <div class="edu-year">Graduated [Year]</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">[Certification or Second Degree]</div>
+          <div class="edu-school">[Institution]</div>
+          <div class="edu-year">[Year]</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">[Another Certification / Course]</div>
+          <div class="edu-school">[Platform / Institution]</div>
+          <div class="edu-year">[Year]</div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:your@email.com">
+          <span class="contact-icon">✉️</span>
+          <div class="contact-info">
+            <div class="contact-label">Email</div>
+            <div class="contact-value">your@email.com</div>
+          </div>
+        </a>
+        <a class="contact-link" href="https://linkedin.com/in/yourusername" target="_blank">
+          <span class="contact-icon">💼</span>
+          <div class="contact-info">
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">linkedin.com/in/yourusername</div>
+          </div>
+        </a>
+        <a class="contact-link" href="https://github.com/yourusername" target="_blank">
+          <span class="contact-icon">🐙</span>
+          <div class="contact-info">
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">github.com/yourusername</div>
+          </div>
+        </a>
+        <a class="contact-link" href="tel:+10000000000">
+          <span class="contact-icon">📞</span>
+          <div class="contact-info">
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">[Your Phone Number]</div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Designed &amp; built with love &nbsp;·&nbsp; <span>Megan Delia</span> &nbsp;·&nbsp; 2026</p>
+  </footer>
+
+</body>
+</html>
