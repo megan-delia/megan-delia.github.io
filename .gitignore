@@ -15,6 +15,9 @@ venv/
 Thumbs.db
 desktop.ini
 
+# MCP config (contains secrets)
+.mcp.json
+
 # Editor
 .vscode/
 .idea/
