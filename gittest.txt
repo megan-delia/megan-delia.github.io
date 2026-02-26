@@ -1,1 +1,5 @@
 Test test
+
+
+  git config --global user.email "megan.delia@masterelectronics.com"
+  git config --global user.name "Megan Delia"
