@@ -62,7 +62,13 @@ Plans:
   3. Finance staff can view all RMA lines with a credit disposition and approve them before the RMA transitions to Resolved
   4. QC staff can record per-line inspection results (pass/fail, findings, disposition recommendation) on a Received RMA
   5. A Returns Agent can split one RMA line into multiple lines with different dispositions or quantities — the split lines persist and the original line is replaced
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Prisma schema extension (CONTESTED state + Finance/QC fields) and Phase 3 type contracts
+- [ ] 03-02-PLAN.md — RmaService Phase 3 methods (contest, overturn, uphold, splitLine, approveLineCredit) and RmaRepository queue queries
+- [ ] 03-03-PLAN.md — NestJS controllers (rma.controller.ts, workflow.controller.ts, finance.controller.ts) and RmaModule wiring
+- [ ] 03-04-PLAN.md — Vitest integration tests for all 6 Phase 3 requirements (WKFL-01 through WKFL-05, LINE-04)
 
 ### Phase 4: Communication and Attachments
 **Goal**: Internal staff and customers can communicate on RMAs through a thread system where visibility is enforced server-side, and documents or photos can be attached and retrieved
@@ -106,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
-| 3. Workflow and Line Operations | 0/TBD | Not started | - |
+| 3. Workflow and Line Operations | 0/4 | Not started | - |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
 | 6. Customer Self-Service Portal | 0/TBD | Not started | - |
