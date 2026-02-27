@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { MerpAdapter } from './merp-adapter.interface.js';
 import { CreditMemoPayload, ReplacementOrderPayload, MerpResult } from './merp.types.js';
@@ -7,7 +7,7 @@ import { CreditMemoPayload, ReplacementOrderPayload, MerpResult } from './merp.t
 export class MerpStubAdapter extends MerpAdapter {
   private readonly logger = new Logger(MerpStubAdapter.name);
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {
     super();
   }
 

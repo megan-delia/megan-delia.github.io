@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { RmsRole } from '../../generated/prisma/client.js';
 
@@ -15,7 +15,7 @@ export interface UserWithBranchRoles {
 
 @Injectable()
 export class UsersRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
 
   async findByPortalUserId(portalUserId: string): Promise<UserWithBranchRoles | null> {
     return this.prisma.user.findUnique({

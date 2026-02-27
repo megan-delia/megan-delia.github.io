@@ -10,6 +10,7 @@ import { UsersModule } from '../users/users.module.js';
 
 @Module({
   imports: [
+    ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

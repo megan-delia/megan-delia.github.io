@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { RmsRole } from '../../generated/prisma/client.js';
 import { UsersRepository } from './users.repository.js';
 
@@ -47,7 +47,7 @@ export function branchScopeWhere(
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(@Inject(UsersRepository) private readonly usersRepository: UsersRepository) {}
 
   // Returns null when user has a valid portal JWT but has NOT been provisioned in RMS.
   // RmsAuthGuard converts null → ForbiddenException(403). Does NOT throw here.

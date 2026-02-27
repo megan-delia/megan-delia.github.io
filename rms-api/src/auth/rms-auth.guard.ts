@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException, Inject } from '@nestjs/common';
 import { UsersService } from '../users/users.service.js';
 
 // Step 2 of the two-step guard chain.
@@ -8,7 +8,7 @@ import { UsersService } from '../users/users.service.js';
 // Attaches RmsUserContext to req.rmsUser on success.
 @Injectable()
 export class RmsAuthGuard implements CanActivate {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(@Inject(UsersService) private readonly usersService: UsersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<{

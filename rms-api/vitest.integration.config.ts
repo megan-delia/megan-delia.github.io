@@ -33,6 +33,6 @@ export default defineConfig({
     // Run integration/e2e tests sequentially — they share a DB
     sequence: { concurrent: false },
     pool: 'forks',
-    poolOptions: { forks: { singleFork: true } },
+    singleFork: true,
   },
 });

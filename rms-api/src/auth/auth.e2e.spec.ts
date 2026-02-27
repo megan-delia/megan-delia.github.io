@@ -17,7 +17,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, Controller, Get, UseGuards, Req } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import * as request from 'supertest';
+import request from 'supertest';
 import { PrismaModule } from '../prisma/prisma.module.js';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { AuthModule } from './auth.module.js';
