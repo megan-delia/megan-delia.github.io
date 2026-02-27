@@ -32,15 +32,15 @@
 - [x] **LINE-01**: Returns Agent can add multiple line items to an RMA, each with part number, quantity, and structured reason code
 - [x] **LINE-02**: Each RMA line can be assigned a disposition type: credit, replacement, scrap, or RTV
 - [x] **LINE-03**: System tracks received quantity and QC-inspected quantity as integers per line (not boolean flags), enabling partial receipt
-- [ ] **LINE-04**: Returns Agent can split one RMA line into multiple lines with different dispositions or quantities
+- [x] **LINE-04**: Returns Agent can split one RMA line into multiple lines with different dispositions or quantities
 
 ### Workflow
 
 - [ ] **WKFL-01**: Branch Manager can view an approvals queue of all Submitted RMAs awaiting their decision and approve or reject from it
-- [ ] **WKFL-02**: Customer can contest a Rejected RMA by providing a dispute reason, transitioning it to Contested
-- [ ] **WKFL-03**: Branch Manager can review a Contested RMA and either overturn (→ Approved) or uphold (→ Rejected with a final documented note)
-- [ ] **WKFL-04**: Finance staff can view and approve credit-disposition lines before an RMA transitions to Resolved
-- [ ] **WKFL-05**: QC staff can record per-line inspection results (pass/fail, findings, disposition recommendation) on a Received RMA
+- [x] **WKFL-02**: Customer can contest a Rejected RMA by providing a dispute reason, transitioning it to Contested
+- [x] **WKFL-03**: Branch Manager can review a Contested RMA and either overturn (→ Approved) or uphold (→ Rejected with a final documented note)
+- [x] **WKFL-04**: Finance staff can view and approve credit-disposition lines before an RMA transitions to Resolved
+- [x] **WKFL-05**: QC staff can record per-line inspection results (pass/fail, findings, disposition recommendation) on a Received RMA
 
 ### Communication
 
@@ -129,12 +129,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LINE-01 | Phase 2 — Core RMA Lifecycle | Complete |
 | LINE-02 | Phase 2 — Core RMA Lifecycle | Complete |
 | LINE-03 | Phase 2 — Core RMA Lifecycle | Complete |
-| LINE-04 | Phase 3 — Workflow and Line Operations | Pending |
+| LINE-04 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-01 | Phase 3 — Workflow and Line Operations | Pending |
-| WKFL-02 | Phase 3 — Workflow and Line Operations | Pending |
-| WKFL-03 | Phase 3 — Workflow and Line Operations | Pending |
-| WKFL-04 | Phase 3 — Workflow and Line Operations | Pending |
-| WKFL-05 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-02 | Phase 3 — Workflow and Line Operations | Complete |
+| WKFL-03 | Phase 3 — Workflow and Line Operations | Complete |
+| WKFL-04 | Phase 3 — Workflow and Line Operations | Complete |
+| WKFL-05 | Phase 3 — Workflow and Line Operations | Complete |
 | COMM-01 | Phase 4 — Communication and Attachments | Pending |
 | COMM-02 | Phase 4 — Communication and Attachments | Pending |
 | COMM-03 | Phase 4 — Communication and Attachments | Pending |
