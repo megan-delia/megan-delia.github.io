@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { Prisma, RmaStatus } from '../../generated/prisma/client.js';
-import { LineInput, UpdateLineInput } from './rma.types.js';
+import { Prisma, RmaStatus, DispositionType } from '../../generated/prisma/client.js';
+import { LineInput, UpdateLineInput, ApprovalQueueItem, CreditApprovalQueueItem } from './rma.types.js';
+import { RmsUserContext, branchScopeWhere } from '../users/users.service.js';
 
 // Full Rma record with lines included — returned by most service reads
 export type RmaWithLines = Prisma.RmaGetPayload<{ include: { lines: true } }>;
@@ -194,5 +195,112 @@ export class RmaRepository {
         qcInspectedAt: new Date(),
       },
     });
+  }
+
+  /**
+   * WKFL-01: Approval queue — RMAs in SUBMITTED or CONTESTED status, scoped to user's branches.
+   * Returns lightweight queue items (no full line data — just counts and totals).
+   * Ordered FIFO (oldest first) for fair processing.
+   */
+  async findForApprovalQueue(
+    user: RmsUserContext,
+    options?: {
+      branchId?: string;
+      status?: RmaStatus;
+      take?: number;
+      skip?: number;
+    },
+  ): Promise<ApprovalQueueItem[]> {
+    // Status filter: both SUBMITTED and CONTESTED unless caller requests one
+    const statusFilter = options?.status
+      ? [options.status]
+      : [RmaStatus.SUBMITTED, RmaStatus.CONTESTED];
+
+    // Branch filter: always start from branchScopeWhere(user) for ownership enforcement
+    // If caller provides branchId, validate it is within the user's branches before narrowing
+    const userBranchFilter = branchScopeWhere(user);
+    const branchFilter =
+      options?.branchId && (user.branchIds.includes(options.branchId) || user.branchIds.length === 0)
+        ? { branchId: options.branchId }  // narrowed to one branch (user owns it)
+        : userBranchFilter;               // all user's branches (or admin: no filter)
+
+    const rows = await this.prisma.rma.findMany({
+      where: {
+        ...branchFilter,
+        status: { in: statusFilter },
+      },
+      orderBy: { createdAt: 'asc' },     // FIFO — oldest first
+      take: options?.take ?? 50,
+      skip: options?.skip ?? 0,
+      select: {
+        id: true,
+        rmaNumber: true,
+        status: true,
+        createdAt: true,
+        customerId: true,
+        submittedBy: { select: { displayName: true, email: true } },
+        lines: { select: { orderedQty: true } },
+        _count: { select: { lines: true } },
+      },
+    });
+
+    return rows.map((r) => ({
+      id: r.id,
+      rmaNumber: r.rmaNumber,
+      status: r.status as string,
+      createdAt: r.createdAt,
+      customerId: r.customerId ?? '',
+      submittedByName: r.submittedBy?.displayName ?? null,
+      submittedByEmail: r.submittedBy?.email ?? null,
+      lineCount: r._count.lines,
+      totalOrderedQty: r.lines.reduce((sum, l) => sum + l.orderedQty, 0),
+    }));
+  }
+
+  /**
+   * WKFL-04: Finance credit approval queue — lines with CREDIT disposition that have not
+   * yet been approved by Finance, on RMAs in QC_COMPLETE status.
+   * Scoped to user's branches via branchScopeWhere().
+   */
+  async findCreditApprovalLines(
+    user: RmsUserContext,
+    options?: { take?: number; skip?: number },
+  ): Promise<CreditApprovalQueueItem[]> {
+    const rows = await this.prisma.rmaLine.findMany({
+      where: {
+        disposition: DispositionType.CREDIT,
+        financeApprovedAt: null,
+        rma: {
+          status: RmaStatus.QC_COMPLETE,
+          ...branchScopeWhere(user),   // Finance users also scoped to their branch(es)
+        },
+      },
+      orderBy: { rma: { createdAt: 'asc' } },
+      take: options?.take ?? 100,
+      skip: options?.skip ?? 0,
+      select: {
+        id: true,
+        partNumber: true,
+        orderedQty: true,
+        disposition: true,
+        rma: {
+          select: {
+            id: true,
+            rmaNumber: true,
+            status: true,
+          },
+        },
+      },
+    });
+
+    return rows.map((l) => ({
+      rmaId: l.rma.id,
+      rmaNumber: l.rma.rmaNumber,
+      lineId: l.id,
+      partNumber: l.partNumber,
+      orderedQty: l.orderedQty,
+      disposition: l.disposition as string,
+      rmaStatus: l.rma.status as string,
+    }));
   }
 }
