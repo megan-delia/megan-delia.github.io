@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T18:45:11.289Z"
+last_updated: "2026-02-27T20:46:12.670Z"
 progress:
-  total_phases: 1
+  total_phases: 2
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 9
+  completed_plans: 5
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Every return moves faster — from submission to resolution — because every person involved can see exactly where it is and what's blocking it.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Core RMA Lifecycle
 
 ## Current Position
 
-Phase: 1 of 6 (Foundation) — COMPLETE ✓
-Plan: 4 of 4 in current phase — COMPLETE ✓
-Status: Phase 1 fully closed — all tests green, ready for Phase 2
-Last activity: 2026-02-27 — Fixed Vitest+NestJS DI: all 11 integration tests now passing (15/15 total). Phase 1 done.
+Phase: 2 of 6 (Core RMA Lifecycle) — In Progress
+Plan: 1 of 5 in current phase — COMPLETE ✓
+Status: Plan 02-01 done — schema/types complete; Wave 2 plans (02-02 through 02-05) are unblocked
+Last activity: 2026-02-27 — Extended Prisma schema with Rma/RmaLine models; created rma.types.ts service contracts.
 
-Progress: [████████░░] 17% (4/4 plans in Phase 1 complete, Phase 1 of 6 done)
+Progress: [████████░░] 22% (5/9 plans complete — Phase 1 4/4, Phase 2 1/5)
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [████████░░] 17% (4/4 plans in Phase 1 complete, P
 | Phase 01-foundation P02 | 2 | 2 tasks | 10 files |
 | Phase 01-foundation P03 | 3 | 2 tasks | 8 files |
 | Phase 01-foundation P04 | 9 | 5 tasks | 6 files |
+| Phase 02-core-rma-lifecycle P01 | 5 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,10 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: 01-04: Prisma 7 ESM + NestJS CJS jest incompatibility deferred — integration tests (auth e2e, audit, merp-stub) are correctly written but require Docker + ESM/CJS interop resolution to run via jest
 - [Phase 01-foundation]: post-01-04: Vitest+esbuild doesn't emit design:paramtypes — all NestJS constructor injections require explicit @Inject(Token) decorators; fixed across MerpStubAdapter, JwtStrategy, RmsAuthGuard, RolesGuard, UsersService, UsersRepository
 - [Phase 01-foundation]: post-01-04: MerpModule must explicitly import PrismaModule; AuthModule must explicitly import ConfigModule — @Global() doesn't propagate through multi-hop DI chains in NestJS TestingModule
+- [Phase 02-core-rma-lifecycle]: RMA number format RMA-YYYYMM-NNNNNN — service generates, not schema
+- [Phase 02-core-rma-lifecycle]: RmaActorContext declared in rma.types.ts to avoid circular import from users.service.ts
+- [Phase 02-core-rma-lifecycle]: qcInspectedAt DateTime? is disposition lock trigger — service enforces, no DB constraint for v1
+- [Phase 02-core-rma-lifecycle]: Over-receipt allowed — receivedQty uncapped; service may warn but never blocks receipt
 
 ### Pending Todos
 
@@ -94,5 +99,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Phase 1 fully closed — 15/15 tests green, checkpoint cleared, ready for Phase 2
+Stopped at: Completed 02-01-PLAN.md — Prisma schema extended (Rma/RmaLine models + enums), rma.types.ts created, Wave 2 plans unblocked
 Resume file: None

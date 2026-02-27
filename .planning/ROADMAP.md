@@ -105,7 +105,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
-| 2. Core RMA Lifecycle | 0/5 | Not started | - |
+| 2. Core RMA Lifecycle | 1/5 | In Progress|  |
 | 3. Workflow and Line Operations | 0/TBD | Not started | - |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
