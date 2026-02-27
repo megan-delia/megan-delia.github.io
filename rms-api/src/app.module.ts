@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
 import { AuditModule } from './audit/audit.module.js';
 import { MerpModule } from './merp/merp.module.js';
+import { RmaModule } from './rma/rma.module.js';
 import { JwtAuthGuard } from './auth/jwt-auth.guard.js';
 import { validate } from './config/config.schema.js';
 
@@ -26,6 +27,7 @@ import { validate } from './config/config.schema.js';
     AuthModule,
     AuditModule,
     MerpModule,
+    RmaModule,
   ],
   providers: [
     // Apply JwtAuthGuard globally — every endpoint is JWT-protected by default.
