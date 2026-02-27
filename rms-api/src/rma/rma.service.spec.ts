@@ -201,34 +201,34 @@ describe('assertValidTransition() — error body shape', () => {
 
 describe('Guard logic — cancellationReason validation', () => {
   it('empty string fails non-empty guard', () => {
-    const cancellationReason = '';
+    const cancellationReason: string = '';
     expect(!cancellationReason || cancellationReason.trim().length === 0).toBe(true);
   });
 
   it('whitespace-only string fails non-empty guard', () => {
-    const cancellationReason = '   ';
+    const cancellationReason: string = '   ';
     expect(!cancellationReason || cancellationReason.trim().length === 0).toBe(true);
   });
 
   it('non-empty string passes non-empty guard', () => {
-    const cancellationReason = 'Duplicate order';
+    const cancellationReason: string = 'Duplicate order';
     expect(!cancellationReason || cancellationReason.trim().length === 0).toBe(false);
   });
 });
 
 describe('Guard logic — rejectionReason validation', () => {
   it('empty string fails non-empty guard', () => {
-    const rejectionReason = '';
+    const rejectionReason: string = '';
     expect(!rejectionReason || rejectionReason.trim().length === 0).toBe(true);
   });
 
   it('whitespace-only string fails non-empty guard', () => {
-    const rejectionReason = '\t\n';
+    const rejectionReason: string = '\t\n';
     expect(!rejectionReason || rejectionReason.trim().length === 0).toBe(true);
   });
 
   it('non-empty string passes non-empty guard', () => {
-    const rejectionReason = 'Part number mismatch';
+    const rejectionReason: string = 'Part number mismatch';
     expect(!rejectionReason || rejectionReason.trim().length === 0).toBe(false);
   });
 });
