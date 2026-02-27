@@ -31,8 +31,8 @@ export default defineConfig({
     // dotenv/config loads DATABASE_URL, PORTAL_JWT_SECRET etc.
     setupFiles: ['reflect-metadata', 'dotenv/config'],
     // Run integration/e2e tests sequentially — they share a DB
+    // pool: 'forks' is the Vitest default; singleFork is not a valid option in Vitest 4
     sequence: { concurrent: false },
     pool: 'forks',
-    singleFork: true,
   },
 });
