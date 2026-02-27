@@ -118,6 +118,7 @@ enum RmaStatus {
   CLOSED
   REJECTED
   CANCELLED
+  CONTESTED
 }
 
 enum DispositionType {
@@ -135,10 +136,13 @@ model Rma {
   branchId           String
   customerId         String?
   submittedById      String
-  cancellationReason String?
-  rejectionReason    String?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  cancellationReason    String?
+  rejectionReason       String?
+  disputeReason         String?   // customer's dispute reason when contesting
+  contestedAt           DateTime? // timestamp of first contest; used for "one contest per RMA" guard
+  contestResolutionNote String?   // Branch Manager's documented note on overturn or uphold
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   submittedBy User         @relation("SubmittedRmas", fields: [submittedById], references: [id])
   branch      Branch       @relation(fields: [branchId], references: [id])
@@ -160,9 +164,14 @@ model RmaLine {
   disposition   DispositionType?
   receivedQty   Int              @default(0)
   inspectedQty  Int              @default(0)
-  qcInspectedAt DateTime?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  qcInspectedAt                 DateTime?
+  financeApprovedAt             DateTime?       // when Finance approved this credit line
+  financeApprovedById           String?         // FK: User.id of Finance approver
+  qcPass                        Boolean?        // true = pass, false = fail, null = not yet inspected
+  qcFindings                    String?         // free-text QC findings/notes
+  qcDispositionRecommendation   DispositionType? // QC staff's recommended disposition
+  createdAt                     DateTime        @default(now())
+  updatedAt                     DateTime        @updatedAt
 
   rma Rma @relation(fields: [rmaId], references: [id], onDelete: Cascade)
 
