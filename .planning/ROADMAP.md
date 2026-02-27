@@ -15,6 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Database schema, project scaffold, auth middleware, RBAC skeleton, audit log design, and MERP adapter stubs — the infrastructure every feature depends on
 - [x] **Phase 2: Core RMA Lifecycle** - State machine, all RMA lifecycle transitions, line items with integer quantity tracking, and audit writes in the same DB transaction (completed 2026-02-27)
 - [x] **Phase 3: Workflow and Line Operations** - REST API layer, RBAC + data-ownership enforcement, workflow queues, contest flow, finance approval, and QC inspection recording (completed 2026-02-27)
+- [ ] **Phase 3.5: Lifecycle HTTP Controller** *(INSERTED — gap closure)* - HTTP controller exposing all Phase 2 lifecycle service methods over REST with RBAC guards, completing the v1.0 HTTP surface
 - [ ] **Phase 4: Communication and Attachments** - Internal and customer-visible comment threads with server-enforced visibility, and document/photo attachments via presigned S3 URLs
 - [ ] **Phase 5: Workspace and Dashboards** - Returns workspace with filtering and search, manager aging and exceptions dashboards, and the React frontend foundation that surfaces all prior backend work
 - [ ] **Phase 6: Customer Self-Service Portal** - External customer submission, status tracking, RMA detail view, and customer-visible messaging through the portal
@@ -70,6 +71,19 @@ Plans:
 - [ ] 03-03-PLAN.md — NestJS controllers (rma.controller.ts, workflow.controller.ts, finance.controller.ts) and RmaModule wiring
 - [ ] 03-04-PLAN.md — Vitest integration tests for all 6 Phase 3 requirements (WKFL-01 through WKFL-05, LINE-04)
 
+### Phase 3.5: Lifecycle HTTP Controller *(INSERTED — gap closure)*
+**Goal**: All Phase 2 lifecycle service methods are reachable over HTTP with correct RBAC guards — completing the v1.0 HTTP surface and closing all integration gaps found in the milestone audit
+**Depends on**: Phase 3
+**Requirements**: LCYC-01, LCYC-02, LCYC-05, LCYC-06, LCYC-07, LCYC-08, LCYC-09, LCYC-10, LCYC-11, LINE-01, LINE-02, LINE-03, WKFL-04
+**Gap Closure**: Closes INT-01, INT-02, INT-03 from v1.0-MILESTONE-AUDIT.md; unblocks Flow 1 (Full RMA Lifecycle) and Flow 2 (Finance gate resolve step)
+**Success Criteria** (what must be TRUE):
+  1. A Returns Agent can create a Draft RMA and submit it via HTTP (`POST /rmas`, `POST /rmas/:id/submit`) — the full lifecycle flow is reachable end-to-end
+  2. All state transition endpoints (cancel, info-required, resubmit, receive, complete-qc, resolve, close) return correct HTTP status codes and enforce the right roles
+  3. Line item endpoints (add, update, remove) are reachable over HTTP with RETURNS_AGENT role enforcement
+  4. GET /rmas and GET /rmas/:id return branch-scoped results — a user at Branch A cannot retrieve Branch B RMAs
+  5. Finance gate flow completes end-to-end: Finance approves credit lines → `POST /rmas/:id/resolve` transitions RMA to Resolved
+**Plans**: TBD
+
 ### Phase 4: Communication and Attachments
 **Goal**: Internal staff and customers can communicate on RMAs through a thread system where visibility is enforced server-side, and documents or photos can be attached and retrieved
 **Depends on**: Phase 3
@@ -113,6 +127,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
 | 3. Workflow and Line Operations | 4/4 | Complete   | 2026-02-27 |
+| 3.5. Lifecycle HTTP Controller *(gap closure)* | 0/TBD | Not started | - |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
 | 6. Customer Self-Service Portal | 0/TBD | Not started | - |
