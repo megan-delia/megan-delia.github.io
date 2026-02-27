@@ -18,6 +18,7 @@ export const ALLOWED_TRANSITIONS: Readonly<Record<RmaStatus, readonly RmaStatus[
   [RmaStatus.REJECTED]:      [],   // terminal — no further transitions
   [RmaStatus.CANCELLED]:     [],   // terminal — no further transitions
   [RmaStatus.CLOSED]:        [],   // terminal — no further transitions
+  [RmaStatus.CONTESTED]:     [RmaStatus.APPROVED, RmaStatus.CLOSED],  // overturn | uphold
 } as const;
 
 /**

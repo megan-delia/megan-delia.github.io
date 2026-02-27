@@ -20,6 +20,7 @@ export const AuditAction = {
   LINE_UPDATED: 'LINE_UPDATED',
   LINE_SPLIT: 'LINE_SPLIT',
   DISPOSITION_SET: 'DISPOSITION_SET',
+  FINANCE_APPROVED: 'FINANCE_APPROVED',
 
   // Communication and attachments
   COMMENT_ADDED: 'COMMENT_ADDED',

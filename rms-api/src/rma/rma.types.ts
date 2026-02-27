@@ -1,4 +1,4 @@
-import { RmsRole } from '../../generated/prisma/enums.js';
+import { RmsRole, DispositionType } from '../../generated/prisma/enums.js';
 
 // ----------------------------------------------------------------
 // Actor context — passed to every service method.
@@ -81,4 +81,64 @@ export interface InvalidTransitionError {
   fromStatus: string;
   toStatus: string;
   allowedTransitions: string[];
+}
+
+// ----------------------------------------------------------------
+// Phase 3 input contracts
+// ----------------------------------------------------------------
+
+export interface ContestInput {
+  disputeReason: string;  // required; customer's dispute reason
+}
+
+export interface OverturnInput {
+  resolutionNote: string;  // required; Branch Manager's documented note
+}
+
+export interface UpholdInput {
+  resolutionNote: string;  // required; Branch Manager's documented note
+}
+
+export interface SplitLineInput {
+  partNumber: string;
+  orderedQty: number;        // positive integer; all splits must sum to original orderedQty
+  reasonCode: string;
+  disposition?: DispositionType;
+}
+
+// Phase 3 extended QC inspection input — adds structured QC result fields to Phase 2's RecordQcInput
+export interface RecordQcInspectionInput {
+  lineId: string;
+  inspectedQty: number;
+  qcPass?: boolean;           // true = pass, false = fail
+  qcFindings?: string;        // free-text inspection notes
+  qcDispositionRecommendation?: DispositionType;  // QC staff recommendation
+}
+
+export interface ApproveLineCreditInput {
+  // No extra fields needed — the actor context carries identity
+}
+
+// Approval queue response shape
+export interface ApprovalQueueItem {
+  id: string;
+  rmaNumber: string;
+  status: string;              // RmaStatus (SUBMITTED or CONTESTED)
+  createdAt: Date;
+  customerId: string;
+  submittedByName: string | null;
+  submittedByEmail: string | null;
+  lineCount: number;
+  totalOrderedQty: number;
+}
+
+// Finance credit queue response shape
+export interface CreditApprovalQueueItem {
+  rmaId: string;
+  rmaNumber: string;
+  lineId: string;
+  partNumber: string;
+  orderedQty: number;
+  disposition: string;         // always 'CREDIT'
+  rmaStatus: string;           // always 'QC_COMPLETE'
 }
