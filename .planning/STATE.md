@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T21:00:00Z"
+last_updated: "2026-02-27T21:09:00Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 
 ## Current Position
 
-Phase: 2 of 6 (Core RMA Lifecycle) — In Progress
-Plan: 4 of 5 in current phase — COMPLETE ✓
-Status: Plan 02-04 done — RmaService extended with approve, reject, recordReceipt, recordQcInspection, completeQc, resolve, close; all 11 LCYC and 3 LINE requirements now implemented; plan 02-05 (integration tests) unblocked
-Last activity: 2026-02-27 — Extended rma.service.ts with 7 additional lifecycle methods (LCYC-03/04/07-10, LINE-03); isFirstReceipt pattern implemented; full TypeScript build passes.
+Phase: 2 of 6 (Core RMA Lifecycle) — COMPLETE ✓
+Plan: 5 of 5 in current phase — COMPLETE ✓
+Status: Plan 02-05 done — Full test suite created: 41 Jest unit tests for state machine and guard logic + 24 Vitest integration tests covering all 14 LCYC/LINE requirements; Phase 2 complete
+Last activity: 2026-02-27 — Created rma.service.spec.ts (41 Jest unit tests, all pass) and rma.service.integration.spec.ts (24 Vitest integration tests, compile-clean, ready for Docker); Phase 2 Core RMA Lifecycle fully implemented and tested.
 
-Progress: [███████████] 44% (8/9 plans complete — Phase 1 4/4, Phase 2 4/5)
+Progress: [████████████] 100% (9/9 plans complete — Phase 1 4/4, Phase 2 5/5)
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [███████████] 44% (8/9 plans complete — Phase 
 | Phase 02-core-rma-lifecycle P02 | 3 | 2 tasks | 2 files |
 | Phase 02-core-rma-lifecycle P03 | 2 | 2 tasks | 3 files |
 | Phase 02-core-rma-lifecycle P04 | 2 | 2 tasks | 1 files |
+| Phase 02-core-rma-lifecycle P05 | 3 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [Phase 02-core-rma-lifecycle]: 02-04: completeQc() is explicit operator action — not auto-triggered when all lines have qcInspectedAt; keeps control in operator hands
 - [Phase 02-core-rma-lifecycle]: 02-04: isFirstReceipt = APPROVED && all lines receivedQty===0 — checked before $transaction() to avoid TOCTOU; both line update and status update atomic inside single $transaction()
 - [Phase 02-core-rma-lifecycle]: 02-04: reject() inline { rejectionReason: string } type — consistent with plan spec, avoids extra import
+- [Phase 02-core-rma-lifecycle]: 02-05: Guard logic tests use explicit string type annotations — prevents TypeScript narrowing to never on empty string literal in boolean short-circuit expressions
+- [Phase 02-core-rma-lifecycle]: 02-05: LINE-02 disposition lock test sets qcInspectedAt directly via prisma.rmaLine.update() — avoids full lifecycle progression just to test the lock guard in DRAFT context
 
 ### Pending Todos
 
@@ -111,5 +114,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-04-PLAN.md — RmaService fully implemented (all 11 LCYC + 3 LINE requirements); plan 02-05 (integration tests) is next
+Stopped at: Completed 02-05-PLAN.md — Full test suite for Phase 2 lifecycle: 41 Jest unit tests + 24 Vitest integration tests; Phase 2 complete; Phase 3 (HTTP layer) is next
 Resume file: None
