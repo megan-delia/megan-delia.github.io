@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T20:50:22Z"
+last_updated: "2026-02-27T20:55:00Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 9
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 2 of 6 (Core RMA Lifecycle) — In Progress
-Plan: 2 of 5 in current phase — COMPLETE ✓
-Status: Plan 02-02 done — state machine transition map and RMA repository complete; Wave 2 plans 02-03 through 02-05 unblocked
-Last activity: 2026-02-27 — Created rma-lifecycle.ts (ALLOWED_TRANSITIONS + assertValidTransition) and rma.repository.ts (all Rma/RmaLine DB operations).
+Plan: 3 of 5 in current phase — COMPLETE ✓
+Status: Plan 02-03 done — RmaModule DI wiring and RmaService (5 lifecycle + 3 line mutation methods) created; Wave 3 plans 02-04 through 02-05 unblocked
+Last activity: 2026-02-27 — Created rma.module.ts (NestJS DI), rma.service.ts (createDraft, submit, placeInfoRequired, resubmit, cancel, addLine, updateLine, removeLine); wired RmaModule into AppModule.
 
-Progress: [█████████░] 33% (6/9 plans complete — Phase 1 4/4, Phase 2 2/5)
+Progress: [██████████] 37% (7/9 plans complete — Phase 1 4/4, Phase 2 3/5)
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [█████████░] 33% (6/9 plans complete — Phase 1 4
 | Phase 01-foundation P04 | 9 | 5 tasks | 6 files |
 | Phase 02-core-rma-lifecycle P01 | 5 | 2 tasks | 3 files |
 | Phase 02-core-rma-lifecycle P02 | 3 | 2 tasks | 2 files |
+| Phase 02-core-rma-lifecycle P03 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,10 @@ Recent decisions affecting current work:
 - [Phase 02-core-rma-lifecycle]: Over-receipt allowed — receivedQty uncapped; service may warn but never blocks receipt
 - [Phase 02-core-rma-lifecycle]: 02-02: ALLOWED_TRANSITIONS covers all 10 RmaStatus keys — TypeScript enforces completeness at compile time
 - [Phase 02-core-rma-lifecycle]: 02-02: Repository mutation methods accept tx param — service owns the transaction boundary; repository never calls $transaction()
+- [Phase 02-core-rma-lifecycle]: 02-03: @Inject(Token) on all three RmaService constructor params — Vitest DI safety enforced
+- [Phase 02-core-rma-lifecycle]: 02-03: LINE_EDITABLE_STATUSES = [DRAFT, INFO_REQUIRED] — lines locked from SUBMITTED onward
+- [Phase 02-core-rma-lifecycle]: 02-03: resubmit() logs AuditAction.RMA_SUBMITTED with metadata.cycle='resubmit' — not a separate audit action
+- [Phase 02-core-rma-lifecycle]: 02-03: AuditModule explicitly imported in RmaModule — not global, multi-module DI requires explicit import
 
 ### Pending Todos
 
@@ -102,5 +107,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-02-PLAN.md — rma-lifecycle.ts (state machine) and rma.repository.ts (DB operations) created; Wave 2 plans 02-03 through 02-05 unblocked
+Stopped at: Completed 02-03-PLAN.md — RmaModule (DI wiring) and RmaService (5 lifecycle + 3 line mutation methods) created; plans 02-04 and 02-05 unblocked
 Resume file: None
