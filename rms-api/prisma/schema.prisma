@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Identity & RBAC -------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid())
+  portalUserId String   @unique  // portal JWT sub claim -- FK from host portal
+  email        String   @unique
+  displayName  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  branchRoles UserBranchRole[]
+  auditEvents AuditEvent[]      @relation("ActorAuditEvents")
+}
+
+model Branch {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  branchRoles UserBranchRole[]
+}
+
+// Junction table: one row per (user, branch, role) assignment
+// A user can appear multiple times -- once per branch they are assigned to
+model UserBranchRole {
+  id         String   @id @default(uuid())
+  userId     String
+  branchId   String
+  role       RmsRole
+  assignedAt DateTime @default(now())
+  assignedBy String   // portal user ID of Admin who granted this role
+
+  user   User   @relation(fields: [userId], references: [id])
+  branch Branch @relation(fields: [branchId], references: [id])
+
+  @@unique([userId, branchId])  // one role per (user, branch) pair
+  @@index([userId])
+  @@index([branchId])
+}
+
+enum RmsRole {
+  RETURNS_AGENT
+  BRANCH_MANAGER
+  WAREHOUSE
+  QC
+  FINANCE
+  ADMIN
+  CUSTOMER
+}
+
+// --- Audit Log -------------------------------------------------------------
+
+// Append-only. Never UPDATE or DELETE rows. Written inside the same
+// $transaction() as the state change it records.
+model AuditEvent {
+  id         String   @id @default(uuid())
+  rmaId      String?  // nullable: non-RMA events (e.g. user provisioning)
+  rmaLineId  String?  // nullable: line-level actions
+  actorId    String   // FK -> User
+  actorRole  String   // snapshot of role at event time (string for forward-compat)
+  action     String   // AuditAction constant (stored as string for flexibility)
+  fromStatus String?  // RMAStatus value for state transitions
+  toStatus   String?
+  oldValue   Json?    // JSONB: field-level before state
+  newValue   Json?    // JSONB: field-level after state
+  metadata   Json?    // JSONB: flexible extra context
+  ipAddress  String?
+  occurredAt DateTime @default(now())
+
+  actor User @relation("ActorAuditEvents", fields: [actorId], references: [id])
+
+  @@index([rmaId])
+  @@index([actorId])
+  @@index([occurredAt])
+}
+
+// --- MERP Integration Log --------------------------------------------------
+
+// Logs every call to the MERP adapter (stub or live) for reconciliation.
+model MerpIntegrationLog {
+  id              String   @id @default(uuid())
+  rmaId           String
+  operationType   String   // 'CREDIT_MEMO' | 'REPLACEMENT_ORDER'
+  requestPayload  Json     // full payload sent (or would-be sent in stub)
+  responsePayload Json?    // full MERP response
+  referenceId     String?  // MERP-returned reference ID
+  status          String   // 'STUB' | 'SUCCESS' | 'FAILED'
+  errorMessage    String?
+  calledAt        DateTime @default(now())
+
+  @@index([rmaId])
+}
