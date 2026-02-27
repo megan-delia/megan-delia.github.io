@@ -110,45 +110,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1 | Pending |
-| FOUND-02 | Phase 1 | Pending |
-| FOUND-03 | Phase 1 | Pending |
-| FOUND-04 | Phase 1 | Pending |
-| FOUND-05 | Phase 1 | Pending |
-| LCYC-01 | Phase 2 | Pending |
-| LCYC-02 | Phase 2 | Pending |
-| LCYC-03 | Phase 2 | Pending |
-| LCYC-04 | Phase 2 | Pending |
-| LCYC-05 | Phase 2 | Pending |
-| LCYC-06 | Phase 2 | Pending |
-| LCYC-07 | Phase 2 | Pending |
-| LCYC-08 | Phase 2 | Pending |
-| LCYC-09 | Phase 2 | Pending |
-| LCYC-10 | Phase 2 | Pending |
-| LCYC-11 | Phase 2 | Pending |
-| LINE-01 | Phase 2 | Pending |
-| LINE-02 | Phase 2 | Pending |
-| LINE-03 | Phase 2 | Pending |
-| LINE-04 | Phase 3 | Pending |
-| WKFL-01 | Phase 3 | Pending |
-| WKFL-02 | Phase 3 | Pending |
-| WKFL-03 | Phase 3 | Pending |
-| WKFL-04 | Phase 3 | Pending |
-| WKFL-05 | Phase 3 | Pending |
-| COMM-01 | Phase 4 | Pending |
-| COMM-02 | Phase 4 | Pending |
-| COMM-03 | Phase 4 | Pending |
-| COMM-04 | Phase 4 | Pending |
-| ATTC-01 | Phase 4 | Pending |
-| ATTC-02 | Phase 4 | Pending |
-| DASH-01 | Phase 5 | Pending |
-| DASH-02 | Phase 5 | Pending |
-| DASH-03 | Phase 5 | Pending |
-| DASH-04 | Phase 5 | Pending |
-| CUST-01 | Phase 6 | Pending |
-| CUST-02 | Phase 6 | Pending |
-| CUST-03 | Phase 6 | Pending |
-| CUST-04 | Phase 6 | Pending |
+| FOUND-01 | Phase 1 — Foundation | Pending |
+| FOUND-02 | Phase 1 — Foundation | Pending |
+| FOUND-03 | Phase 1 — Foundation | Pending |
+| FOUND-04 | Phase 1 — Foundation | Pending |
+| FOUND-05 | Phase 1 — Foundation | Pending |
+| LCYC-01 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-02 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-03 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-04 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-05 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-06 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-07 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-08 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-09 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-10 | Phase 2 — Core RMA Lifecycle | Pending |
+| LCYC-11 | Phase 2 — Core RMA Lifecycle | Pending |
+| LINE-01 | Phase 2 — Core RMA Lifecycle | Pending |
+| LINE-02 | Phase 2 — Core RMA Lifecycle | Pending |
+| LINE-03 | Phase 2 — Core RMA Lifecycle | Pending |
+| LINE-04 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-01 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-02 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-03 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-04 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-05 | Phase 3 — Workflow and Line Operations | Pending |
+| COMM-01 | Phase 4 — Communication and Attachments | Pending |
+| COMM-02 | Phase 4 — Communication and Attachments | Pending |
+| COMM-03 | Phase 4 — Communication and Attachments | Pending |
+| COMM-04 | Phase 4 — Communication and Attachments | Pending |
+| ATTC-01 | Phase 4 — Communication and Attachments | Pending |
+| ATTC-02 | Phase 4 — Communication and Attachments | Pending |
+| DASH-01 | Phase 5 — Workspace and Dashboards | Pending |
+| DASH-02 | Phase 5 — Workspace and Dashboards | Pending |
+| DASH-03 | Phase 5 — Workspace and Dashboards | Pending |
+| DASH-04 | Phase 5 — Workspace and Dashboards | Pending |
+| CUST-01 | Phase 6 — Customer Self-Service Portal | Pending |
+| CUST-02 | Phase 6 — Customer Self-Service Portal | Pending |
+| CUST-03 | Phase 6 — Customer Self-Service Portal | Pending |
+| CUST-04 | Phase 6 — Customer Self-Service Portal | Pending |
 
 **Coverage:**
 - v1 requirements: 38 total
@@ -157,4 +157,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-27*
-*Last updated: 2026-02-27 after initial definition*
+*Last updated: 2026-02-27 after roadmap creation — phase names finalized*
