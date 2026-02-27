@@ -12,6 +12,8 @@ import {
   UpdateLineInput,
   CancelRmaInput,
   PlaceInfoRequiredInput,
+  RecordReceiptInput,
+  RecordQcInput,
 } from './rma.types.js';
 
 // Statuses in which line mutations (add/edit/remove) are permitted
@@ -293,6 +295,68 @@ export class RmaService {
         actorRole: actor.role,
         action: AuditAction.LINE_UPDATED,
         oldValue: { partNumber: line.partNumber, orderedQty: line.orderedQty, removed: true },
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-03: Approve a Submitted RMA
+  // ----------------------------------------------------------------
+  async approve(rmaId: string, actor: RmaActorContext): Promise<RmaWithLines> {
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    assertValidTransition(rma.status, RmaStatus.APPROVED);
+
+    return this.prisma.$transaction(async (tx) => {
+      await this.rmaRepository.updateStatus(tx, rmaId, RmaStatus.APPROVED);
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.RMA_APPROVED,
+        fromStatus: rma.status,
+        toStatus: RmaStatus.APPROVED,
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-04: Reject a Submitted RMA with a required reason
+  // ----------------------------------------------------------------
+  async reject(
+    rmaId: string,
+    input: { rejectionReason: string },
+    actor: RmaActorContext,
+  ): Promise<RmaWithLines> {
+    if (!input.rejectionReason || input.rejectionReason.trim().length === 0) {
+      throw new BadRequestException('Rejection reason is required');
+    }
+
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    assertValidTransition(rma.status, RmaStatus.REJECTED);
+
+    return this.prisma.$transaction(async (tx) => {
+      await this.rmaRepository.updateRma(tx, rmaId, {
+        status: RmaStatus.REJECTED,
+        rejectionReason: input.rejectionReason.trim(),
+      });
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.RMA_REJECTED,
+        fromStatus: rma.status,
+        toStatus: RmaStatus.REJECTED,
+        newValue: { rejectionReason: input.rejectionReason.trim() },
       });
 
       return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
