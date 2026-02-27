@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: rms_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rms_dev
+      POSTGRES_USER: rms
+      POSTGRES_PASSWORD: rms_local_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rms -d rms_dev"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: rms_redis
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+volumes:
+  postgres_data:
