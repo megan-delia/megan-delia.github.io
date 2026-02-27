@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Database schema, project scaffold, auth middleware, RBAC skeleton, audit log design, and MERP adapter stubs — the infrastructure every feature depends on
 - [x] **Phase 2: Core RMA Lifecycle** - State machine, all RMA lifecycle transitions, line items with integer quantity tracking, and audit writes in the same DB transaction (completed 2026-02-27)
-- [ ] **Phase 3: Workflow and Line Operations** - REST API layer, RBAC + data-ownership enforcement, workflow queues, contest flow, finance approval, and QC inspection recording
+- [x] **Phase 3: Workflow and Line Operations** - REST API layer, RBAC + data-ownership enforcement, workflow queues, contest flow, finance approval, and QC inspection recording (completed 2026-02-27)
 - [ ] **Phase 4: Communication and Attachments** - Internal and customer-visible comment threads with server-enforced visibility, and document/photo attachments via presigned S3 URLs
 - [ ] **Phase 5: Workspace and Dashboards** - Returns workspace with filtering and search, manager aging and exceptions dashboards, and the React frontend foundation that surfaces all prior backend work
 - [ ] **Phase 6: Customer Self-Service Portal** - External customer submission, status tracking, RMA detail view, and customer-visible messaging through the portal
@@ -112,7 +112,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
-| 3. Workflow and Line Operations | 3/4 | In Progress|  |
+| 3. Workflow and Line Operations | 4/4 | Complete   | 2026-02-27 |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
 | 6. Customer Self-Service Portal | 0/TBD | Not started | - |

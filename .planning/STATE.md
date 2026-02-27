@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T22:22:00Z"
+last_updated: "2026-02-27T22:09:27.558Z"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 13
   completed_plans: 13
 ---
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 
 ## Current Position
 
-Phase: 3 of 6 (Workflow and Line Operations) — IN PROGRESS
-Plan: 3 of ? in current phase — COMPLETE ✓
-Status: Plan 03-03 done — 3 NestJS controllers created (rma.controller.ts, workflow.controller.ts, finance.controller.ts); all Phase 3 requirements (WKFL-01 through WKFL-05, LINE-04) accessible via REST; npm run build 0 errors; 41/41 Phase 2 unit tests passing
-Last activity: 2026-02-27 — Created rma.controller.ts (+125 lines), workflow.controller.ts (+68 lines), finance.controller.ts (+33 lines); updated rma.module.ts with 3 controllers
+Phase: 3 of 6 (Workflow and Line Operations) — COMPLETE ✓
+Plan: 4 of 4 in current phase — COMPLETE ✓
+Status: Plan 03-04 done — workflow.integration.spec.ts created with 16 integration tests covering WKFL-01 through WKFL-05 and LINE-04; Phase 3 complete; tsc --noEmit 0 errors; npm run build 0 errors; 41/41 Phase 2 unit tests passing
+Last activity: 2026-02-27 — Created workflow.integration.spec.ts (+695 lines); fixed rma.service.integration.spec.ts (7 recordQcInspection calls updated for Phase 3 type)
 
-Progress: [█████████████░░░░░░░] ~62% (13/18 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 3/?)
+Progress: [████████████████░░░░] ~72% (16/22 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 4/4)
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [█████████████░░░░░░░] ~62% (1
 | Phase 03-workflow-and-line-operations P01 | 8 | 2 tasks | 4 files |
 | Phase 03-workflow-and-line-operations P02 | 3 | 2 tasks | 2 files |
 | Phase 03-workflow-and-line-operations P03 | 2 | 2 tasks | 4 files |
+| Phase 03-workflow-and-line-operations P04 | 3 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -111,6 +112,9 @@ Recent decisions affecting current work:
 - [Phase 03-workflow-and-line-operations]: 03-03: RecordQcInspectionInput.lineId required field — controller must pass lineId both as positional arg and in input object to match service signature and type
 - [Phase 03-workflow-and-line-operations]: 03-03: WorkflowController uses class-level @Roles(BRANCH_MANAGER) — covers all endpoints without per-method annotation
 - [Phase 03-workflow-and-line-operations]: 03-03: FinanceController injects only RmaRepository — credit queue is a direct query; no RmaService method needed
+- [Phase 03-workflow-and-line-operations]: RecordQcInspectionInput.lineId required in Phase 3 — Phase 2 integration test calls updated to include lineId and replace qcNotes with qcFindings
+- [Phase 03-workflow-and-line-operations]: Two-branch fixture (branchA + branchB) used for cross-branch isolation test in workflow integration spec
+- [Phase 03-workflow-and-line-operations]: RmsUserContext and RmaActorContext are structurally identical — actor contexts satisfy both interfaces for service and repository calls
 
 ### Pending Todos
 
@@ -128,5 +132,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 03-03-PLAN.md — three NestJS controllers (rma/workflow/finance) + RmaModule wired; all Phase 3 HTTP endpoints live; WKFL-01 through WKFL-05 and LINE-04 accessible via REST
+Stopped at: Completed 03-04-PLAN.md — workflow.integration.spec.ts with 16 integration tests for WKFL-01 through WKFL-05 and LINE-04; Phase 3 complete; ready for Phase 4 (MERP integration)
 Resume file: None
