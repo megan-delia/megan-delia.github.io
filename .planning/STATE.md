@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T21:23:00.000Z"
+last_updated: "2026-02-27T21:57:59.197Z"
 progress:
-  total_phases: 6
+  total_phases: 3
   completed_phases: 2
-  total_plans: 10
-  completed_plans: 10
+  total_plans: 13
+  completed_plans: 11
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 3 of 6 (Workflow and Line Operations) — IN PROGRESS
-Plan: 1 of ? in current phase — COMPLETE ✓
-Status: Plan 03-01 done — Prisma schema extended with CONTESTED state + 8 new fields; Phase 3 TypeScript input contracts added; state machine extended with CONTESTED transition paths; TypeScript build passes 0 errors
-Last activity: 2026-02-27 — Extended schema.prisma (CONTESTED, contest/finance/QC fields), rma.types.ts (Phase 3 input contracts), rma-lifecycle.ts (CONTESTED transitions), audit.types.ts (FINANCE_APPROVED); prisma generate succeeded; npm run build 0 errors.
+Plan: 2 of ? in current phase — COMPLETE ✓
+Status: Plan 03-02 done — 5 new RmaService methods (contest/overturn/uphold/splitLine/approveLineCredit); resolve/updateLine/recordQcInspection extended; 2 new RmaRepository queue methods (findForApprovalQueue/findCreditApprovalLines); npm run build 0 errors; 41/41 Phase 2 unit tests passing
+Last activity: 2026-02-27 — Extended rma.service.ts (+249 lines), rma.repository.ts (+110 lines); all Phase 3 service-layer business logic complete
 
-Progress: [████████████░░░░░░░░] ~55% (10/18 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 1/?)
+Progress: [████████████░░░░░░░░] ~58% (12/18 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 2/?)
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Progress: [████████████░░░░░░░░] ~55% (1
 | Phase 02-core-rma-lifecycle P04 | 2 | 2 tasks | 1 files |
 | Phase 02-core-rma-lifecycle P05 | 3 | 2 tasks | 2 files |
 | Phase 03-workflow-and-line-operations P01 | 8 | 2 tasks | 4 files |
+| Phase 03-workflow-and-line-operations P02 | 3 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -101,6 +102,10 @@ Recent decisions affecting current work:
 - [Phase 03-workflow-and-line-operations]: 03-01: CONTESTED state exits to APPROVED (overturn) or CLOSED (uphold) — REJECTED remains terminal; CONTESTED is a separate state reached from REJECTED
 - [Phase 03-workflow-and-line-operations]: 03-01: DispositionType must be imported locally AND re-exported — export-only re-export (export { X } from '...') does not create local binding in TypeScript
 - [Phase 03-workflow-and-line-operations]: 03-01: Phase 2 RecordQcInput kept intact; Phase 3 adds RecordQcInspectionInput as distinct named interface to avoid breaking existing service code
+- [Phase 03-workflow-and-line-operations]: 03-02: recordQcInspection() uses inline tx.rmaLine.update() to support Phase 3 QC fields without changing repository method signature
+- [Phase 03-workflow-and-line-operations]: 03-02: findForApprovalQueue() uses submittedBy Prisma relation join — names/emails delivered from DB, not deferred to controller
+- [Phase 03-workflow-and-line-operations]: 03-02: clearFinanceApproval runs as second tx.rmaLine.update() inside updateLine() transaction — keeps repository Finance-unaware
+- [Phase 03-workflow-and-line-operations]: 03-02: one-contest guard is service-layer check on rma.contestedAt before assertValidTransition — state machine cannot express first-time-only constraints
 
 ### Pending Todos
 
@@ -118,5 +123,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 03-01-PLAN.md — Phase 3 data layer foundation: CONTESTED state, Phase 3 input contracts, extended state machine; ready for 03-02 service methods
+Stopped at: Completed 03-02-PLAN.md — Phase 3 service methods + repository queues: contest/overturn/uphold/splitLine/approveLineCredit + resolve/updateLine/recordQcInspection extensions + findForApprovalQueue/findCreditApprovalLines; ready for 03-03 controllers
 Resume file: None
