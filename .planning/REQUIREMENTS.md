@@ -7,11 +7,11 @@
 
 ### Foundation
 
-- [ ] **FOUND-01**: User authenticates into the RMS via the host portal's JWT without a separate login
-- [ ] **FOUND-02**: System enforces role-based access for 6 internal roles (Returns Agent, Branch Manager, Warehouse, QC, Finance, Admin) and external Customer role
-- [ ] **FOUND-03**: System enforces data-ownership scoping — users can only access RMAs belonging to their branch or customer account (not just role-level gating)
-- [ ] **FOUND-04**: System writes an append-only audit log entry (actor, role, timestamp, action, old value, new value) atomically with every state change and data modification
-- [ ] **FOUND-05**: System exposes typed MERP adapter stubs for credit memo creation and replacement order creation with defined request/response contracts
+- [x] **FOUND-01**: User authenticates into the RMS via the host portal's JWT without a separate login
+- [x] **FOUND-02**: System enforces role-based access for 6 internal roles (Returns Agent, Branch Manager, Warehouse, QC, Finance, Admin) and external Customer role
+- [x] **FOUND-03**: System enforces data-ownership scoping — users can only access RMAs belonging to their branch or customer account (not just role-level gating)
+- [x] **FOUND-04**: System writes an append-only audit log entry (actor, role, timestamp, action, old value, new value) atomically with every state change and data modification
+- [x] **FOUND-05**: System exposes typed MERP adapter stubs for credit memo creation and replacement order creation with defined request/response contracts
 
 ### Lifecycle
 
@@ -110,11 +110,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FOUND-01 | Phase 1 — Foundation | Pending |
-| FOUND-02 | Phase 1 — Foundation | Pending |
-| FOUND-03 | Phase 1 — Foundation | Pending |
-| FOUND-04 | Phase 1 — Foundation | Pending |
-| FOUND-05 | Phase 1 — Foundation | Pending |
+| FOUND-01 | Phase 1 — Foundation | Complete |
+| FOUND-02 | Phase 1 — Foundation | Complete |
+| FOUND-03 | Phase 1 — Foundation | Complete |
+| FOUND-04 | Phase 1 — Foundation | Complete |
+| FOUND-05 | Phase 1 — Foundation | Complete |
 | LCYC-01 | Phase 2 — Core RMA Lifecycle | Pending |
 | LCYC-02 | Phase 2 — Core RMA Lifecycle | Pending |
 | LCYC-03 | Phase 2 — Core RMA Lifecycle | Pending |
