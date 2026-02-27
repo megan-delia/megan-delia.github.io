@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T21:57:59.197Z"
+last_updated: "2026-02-27T22:22:00Z"
 progress:
   total_phases: 3
   completed_phases: 2
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 13
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 3 of 6 (Workflow and Line Operations) — IN PROGRESS
-Plan: 2 of ? in current phase — COMPLETE ✓
-Status: Plan 03-02 done — 5 new RmaService methods (contest/overturn/uphold/splitLine/approveLineCredit); resolve/updateLine/recordQcInspection extended; 2 new RmaRepository queue methods (findForApprovalQueue/findCreditApprovalLines); npm run build 0 errors; 41/41 Phase 2 unit tests passing
-Last activity: 2026-02-27 — Extended rma.service.ts (+249 lines), rma.repository.ts (+110 lines); all Phase 3 service-layer business logic complete
+Plan: 3 of ? in current phase — COMPLETE ✓
+Status: Plan 03-03 done — 3 NestJS controllers created (rma.controller.ts, workflow.controller.ts, finance.controller.ts); all Phase 3 requirements (WKFL-01 through WKFL-05, LINE-04) accessible via REST; npm run build 0 errors; 41/41 Phase 2 unit tests passing
+Last activity: 2026-02-27 — Created rma.controller.ts (+125 lines), workflow.controller.ts (+68 lines), finance.controller.ts (+33 lines); updated rma.module.ts with 3 controllers
 
-Progress: [████████████░░░░░░░░] ~58% (12/18 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 2/?)
+Progress: [█████████████░░░░░░░] ~62% (13/18 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 3/?)
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [████████████░░░░░░░░] ~58% (1
 | Phase 02-core-rma-lifecycle P05 | 3 | 2 tasks | 2 files |
 | Phase 03-workflow-and-line-operations P01 | 8 | 2 tasks | 4 files |
 | Phase 03-workflow-and-line-operations P02 | 3 | 2 tasks | 2 files |
+| Phase 03-workflow-and-line-operations P03 | 2 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -106,6 +107,10 @@ Recent decisions affecting current work:
 - [Phase 03-workflow-and-line-operations]: 03-02: findForApprovalQueue() uses submittedBy Prisma relation join — names/emails delivered from DB, not deferred to controller
 - [Phase 03-workflow-and-line-operations]: 03-02: clearFinanceApproval runs as second tx.rmaLine.update() inside updateLine() transaction — keeps repository Finance-unaware
 - [Phase 03-workflow-and-line-operations]: 03-02: one-contest guard is service-layer check on rma.contestedAt before assertValidTransition — state machine cannot express first-time-only constraints
+- [Phase 03-workflow-and-line-operations]: 03-03: Thin controller pattern enforced — no business logic in controllers; all logic in RmaService/RmaRepository
+- [Phase 03-workflow-and-line-operations]: 03-03: RecordQcInspectionInput.lineId required field — controller must pass lineId both as positional arg and in input object to match service signature and type
+- [Phase 03-workflow-and-line-operations]: 03-03: WorkflowController uses class-level @Roles(BRANCH_MANAGER) — covers all endpoints without per-method annotation
+- [Phase 03-workflow-and-line-operations]: 03-03: FinanceController injects only RmaRepository — credit queue is a direct query; no RmaService method needed
 
 ### Pending Todos
 
@@ -123,5 +128,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 03-02-PLAN.md — Phase 3 service methods + repository queues: contest/overturn/uphold/splitLine/approveLineCredit + resolve/updateLine/recordQcInspection extensions + findForApprovalQueue/findCreditApprovalLines; ready for 03-03 controllers
+Stopped at: Completed 03-03-PLAN.md — three NestJS controllers (rma/workflow/finance) + RmaModule wired; all Phase 3 HTTP endpoints live; WKFL-01 through WKFL-05 and LINE-04 accessible via REST
 Resume file: None
