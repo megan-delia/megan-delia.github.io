@@ -362,4 +362,197 @@ export class RmaService {
       return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
     });
   }
+
+  // ----------------------------------------------------------------
+  // LCYC-07 + LINE-03: Record receipt on an Approved (or already Received) RMA line
+  // ----------------------------------------------------------------
+  async recordReceipt(
+    rmaId: string,
+    lineId: string,
+    input: RecordReceiptInput,
+    actor: RmaActorContext,
+  ): Promise<RmaWithLines> {
+    if (input.receivedQty < 0) {
+      throw new BadRequestException('Received quantity cannot be negative');
+    }
+
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    // Receipt is valid in APPROVED (first receipt transitions) or RECEIVED (subsequent receipts)
+    if (rma.status !== RmaStatus.APPROVED && rma.status !== RmaStatus.RECEIVED) {
+      throw new BadRequestException(
+        `Cannot record receipt on an RMA in ${rma.status} status — must be APPROVED or RECEIVED`,
+      );
+    }
+
+    const line = rma.lines.find((l) => l.id === lineId);
+    if (!line) throw new NotFoundException(`Line ${lineId} not found on RMA ${rmaId}`);
+
+    // LINE-03 guard: receivedQty cannot be set below existing inspectedQty
+    // (over-receipt above orderedQty IS allowed — CONTEXT.md locked decision)
+    if (input.receivedQty < line.inspectedQty) {
+      throw new BadRequestException(
+        `Cannot set receivedQty to ${input.receivedQty} — it would be below the already-inspected quantity of ${line.inspectedQty}`,
+      );
+    }
+
+    // LCYC-07: First-receipt detection — if ALL lines have receivedQty === 0,
+    // this is the first receipt on the RMA; transition to RECEIVED in the same tx.
+    // Check is done before the update to avoid TOCTOU (Pitfall 3 from RESEARCH.md).
+    const isFirstReceipt = rma.status === RmaStatus.APPROVED &&
+      rma.lines.every((l) => l.receivedQty === 0);
+
+    return this.prisma.$transaction(async (tx) => {
+      // Update the line quantity
+      await this.rmaRepository.updateLineReceipt(tx, lineId, input.receivedQty);
+
+      // If first receipt: transition RMA status to RECEIVED atomically
+      if (isFirstReceipt) {
+        assertValidTransition(rma.status, RmaStatus.RECEIVED);
+        await this.rmaRepository.updateStatus(tx, rmaId, RmaStatus.RECEIVED);
+      }
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        rmaLineId: lineId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.RMA_RECEIVED,
+        fromStatus: isFirstReceipt ? rma.status : undefined,
+        toStatus: isFirstReceipt ? RmaStatus.RECEIVED : undefined,
+        newValue: { receivedQty: input.receivedQty, isFirstReceipt },
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-08 + LINE-03: Record QC inspection on a Received RMA line
+  // ----------------------------------------------------------------
+  async recordQcInspection(
+    rmaId: string,
+    lineId: string,
+    input: RecordQcInput,
+    actor: RmaActorContext,
+  ): Promise<RmaWithLines> {
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    if (rma.status !== RmaStatus.RECEIVED) {
+      throw new BadRequestException(
+        `Cannot record QC inspection on an RMA in ${rma.status} status — must be RECEIVED`,
+      );
+    }
+
+    const line = rma.lines.find((l) => l.id === lineId);
+    if (!line) throw new NotFoundException(`Line ${lineId} not found on RMA ${rmaId}`);
+
+    // LINE-03 guard: inspectedQty cannot exceed receivedQty (CONTEXT.md locked decision)
+    if (input.inspectedQty > line.receivedQty) {
+      throw new BadRequestException(
+        `Cannot inspect ${input.inspectedQty} units — only ${line.receivedQty} units received on this line`,
+      );
+    }
+
+    if (input.inspectedQty < 0) {
+      throw new BadRequestException('Inspected quantity cannot be negative');
+    }
+
+    return this.prisma.$transaction(async (tx) => {
+      // Sets inspectedQty and qcInspectedAt (disposition lock trigger)
+      await this.rmaRepository.updateLineQc(tx, lineId, input.inspectedQty);
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        rmaLineId: lineId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.LINE_UPDATED,
+        newValue: {
+          inspectedQty: input.inspectedQty,
+          qcNotes: input.qcNotes ?? null,
+        },
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-08 (completion): Transition RECEIVED → QC_COMPLETE
+  // Called after QC staff have recorded inspection on all (or sufficient) lines.
+  // ----------------------------------------------------------------
+  async completeQc(rmaId: string, actor: RmaActorContext): Promise<RmaWithLines> {
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    assertValidTransition(rma.status, RmaStatus.QC_COMPLETE);
+
+    return this.prisma.$transaction(async (tx) => {
+      await this.rmaRepository.updateStatus(tx, rmaId, RmaStatus.QC_COMPLETE);
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.STATUS_CHANGED,
+        fromStatus: rma.status,
+        toStatus: RmaStatus.QC_COMPLETE,
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-09: Resolve a QC-complete RMA
+  // ----------------------------------------------------------------
+  async resolve(rmaId: string, actor: RmaActorContext): Promise<RmaWithLines> {
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    assertValidTransition(rma.status, RmaStatus.RESOLVED);
+
+    return this.prisma.$transaction(async (tx) => {
+      await this.rmaRepository.updateStatus(tx, rmaId, RmaStatus.RESOLVED);
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.RMA_RESOLVED,
+        fromStatus: rma.status,
+        toStatus: RmaStatus.RESOLVED,
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // LCYC-10: Close a Resolved RMA
+  // ----------------------------------------------------------------
+  async close(rmaId: string, actor: RmaActorContext): Promise<RmaWithLines> {
+    const rma = await this.rmaRepository.findById(rmaId);
+    if (!rma) throw new NotFoundException(`RMA ${rmaId} not found`);
+
+    assertValidTransition(rma.status, RmaStatus.CLOSED);
+
+    return this.prisma.$transaction(async (tx) => {
+      await this.rmaRepository.updateStatus(tx, rmaId, RmaStatus.CLOSED);
+
+      await this.auditService.logEvent(tx, {
+        rmaId,
+        actorId: actor.id,
+        actorRole: actor.role,
+        action: AuditAction.RMA_CLOSED,
+        fromStatus: rma.status,
+        toStatus: RmaStatus.CLOSED,
+      });
+
+      return this.rmaRepository.findById(rmaId) as Promise<RmaWithLines>;
+    });
+  }
 }
