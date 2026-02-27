@@ -43,7 +43,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. An attempt to transition an RMA to any state not permitted from its current state returns an error — no impossible states are reachable through the API
   4. Warehouse staff can record physical receipt on an Approved RMA using an integer received quantity per line (not a checkbox) — partial receipt is recordable
   5. QC staff can complete inspection on a Received RMA, and a Returns Agent or Finance user can resolve it — the RMA reaches Closed only after passing through QC and Resolved
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Extend Prisma schema (Rma, RmaLine, RmaStatus, DispositionType) and create rma.types.ts input contracts
+- [ ] 02-02-PLAN.md — State machine (ALLOWED_TRANSITIONS, assertValidTransition) and RmaRepository DB operations
+- [ ] 02-03-PLAN.md — RmaModule, RmaService draft path: createDraft, submit, placeInfoRequired, resubmit, cancel, addLine, updateLine, removeLine
+- [ ] 02-04-PLAN.md — RmaService completion: approve, reject, recordReceipt, recordQcInspection, completeQc, resolve, close
+- [ ] 02-05-PLAN.md — TDD: Jest unit tests (state machine + guards) and Vitest integration tests (all 14 LCYC/LINE requirements against real DB)
 
 ### Phase 3: Workflow and Line Operations
 **Goal**: Role-gated workflow queues, contest flow, Finance approval, QC inspection recording, and line splitting are accessible through a REST API with full RBAC and data-ownership enforcement
@@ -98,7 +105,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
-| 2. Core RMA Lifecycle | 0/TBD | Not started | - |
+| 2. Core RMA Lifecycle | 0/5 | Not started | - |
 | 3. Workflow and Line Operations | 0/TBD | Not started | - |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
