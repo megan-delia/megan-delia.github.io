@@ -418,7 +418,7 @@ describe('RmaService Integration', () => {
       await rmaService.recordReceipt(rma.id, line1.id, { receivedQty: 10 }, actor);
 
       // Then: record QC inspection (sets inspectedQty = 8)
-      await rmaService.recordQcInspection(rma.id, line1.id, { inspectedQty: 8 }, actor);
+      await rmaService.recordQcInspection(rma.id, line1.id, { lineId: line1.id, inspectedQty: 8 }, actor);
 
       // Now try to set receivedQty = 5 (below inspectedQty = 8) — must throw
       await expect(
@@ -440,7 +440,7 @@ describe('RmaService Integration', () => {
       const result = await rmaService.recordQcInspection(
         rma.id,
         line1.id,
-        { inspectedQty: 7, qcNotes: 'Minor cosmetic damage' },
+        { lineId: line1.id, inspectedQty: 7, qcFindings: 'Minor cosmetic damage' },
         actor,
       );
 
@@ -458,7 +458,7 @@ describe('RmaService Integration', () => {
       const result = await rmaService.recordQcInspection(
         rma.id,
         line1.id,
-        { inspectedQty: 0 },
+        { lineId: line1.id, inspectedQty: 0 },
         actor,
       );
 
@@ -475,7 +475,7 @@ describe('RmaService Integration', () => {
 
       // inspectedQty = 10 exceeds receivedQty = 5 — must throw
       await expect(
-        rmaService.recordQcInspection(rma.id, line1.id, { inspectedQty: 10 }, actor),
+        rmaService.recordQcInspection(rma.id, line1.id, { lineId: line1.id, inspectedQty: 10 }, actor),
       ).rejects.toThrow(BadRequestException);
     });
   });
@@ -490,7 +490,7 @@ describe('RmaService Integration', () => {
       const line1 = rma.lines[0];
 
       await rmaService.recordReceipt(rma.id, line1.id, { receivedQty: 10 }, actor);
-      await rmaService.recordQcInspection(rma.id, line1.id, { inspectedQty: 10 }, actor);
+      await rmaService.recordQcInspection(rma.id, line1.id, { lineId: line1.id, inspectedQty: 10 }, actor);
       const qcComplete = await rmaService.completeQc(rma.id, actor);
 
       expect(qcComplete.status).toBe(RmaStatus.QC_COMPLETE);
@@ -507,7 +507,7 @@ describe('RmaService Integration', () => {
       const line1 = rma.lines[0];
 
       await rmaService.recordReceipt(rma.id, line1.id, { receivedQty: 10 }, actor);
-      await rmaService.recordQcInspection(rma.id, line1.id, { inspectedQty: 10 }, actor);
+      await rmaService.recordQcInspection(rma.id, line1.id, { lineId: line1.id, inspectedQty: 10 }, actor);
       await rmaService.completeQc(rma.id, actor);
       const resolved = await rmaService.resolve(rma.id, actor);
 
@@ -530,7 +530,7 @@ describe('RmaService Integration', () => {
       const line1 = rma.lines[0];
 
       await rmaService.recordReceipt(rma.id, line1.id, { receivedQty: 10 }, actor);
-      await rmaService.recordQcInspection(rma.id, line1.id, { inspectedQty: 10 }, actor);
+      await rmaService.recordQcInspection(rma.id, line1.id, { lineId: line1.id, inspectedQty: 10 }, actor);
       await rmaService.completeQc(rma.id, actor);
       await rmaService.resolve(rma.id, actor);
       const closed = await rmaService.close(rma.id, actor);
