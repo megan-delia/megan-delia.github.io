@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T18:25:26.253Z"
+last_updated: "2026-02-27T18:30:31.066Z"
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 4
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State
@@ -23,32 +23,33 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 1 of 6 (Foundation)
-Plan: 2 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-27 — Completed 01-02: JWT guard chain, RmsAuthGuard, RolesGuard, UsersService, branchScopeWhere
+Last activity: 2026-02-27 — Completed 01-03: AuditService with transaction-enforced logEvent, MerpAdapter/MerpStubAdapter with DI token pattern
 
-Progress: [████░░░░░░] 8% (2/4 plans in Phase 1 complete)
+Progress: [██████░░░░] 12% (3/4 plans in Phase 1 complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
-- Average duration: 5 min
-- Total execution time: 0.17 hours
+- Total plans completed: 3
+- Average duration: 4.3 min
+- Total execution time: 0.22 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Foundation | 2/4 | 10 min | 5 min |
+| 1. Foundation | 3/4 | 13 min | 4.3 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (8 min), 01-02 (2 min)
+- Last 5 plans: 01-01 (8 min), 01-02 (2 min), 01-03 (3 min)
 - Trend: accelerating
 
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 8 | 3 tasks | 14 files |
 | Phase 01-foundation P02 | 2 | 2 tasks | 10 files |
+| Phase 01-foundation P03 | 3 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,10 @@ Recent decisions affecting current work:
 - 01-02: Roles from user_branch_roles only (LOCKED) -- JWT sub claim used for identity only, never for role assignment
 - 01-02: JWT format assumed HS256 symmetric -- portal team confirmation still needed if RS256 asymmetric tokens are used
 - 01-02: branchScopeWhere() is the query-layer ownership filter -- all future repository functions must use this for branch data isolation
+- [Phase 01-foundation]: 01-03: logEvent(tx) enforces atomic audit at type level — no tx-less overload, callers without transaction fail compilation
+- [Phase 01-foundation]: 01-03: AuditAction is const object (not Prisma enum) — new action types require only TypeScript change, no DB migration
+- [Phase 01-foundation]: 01-03: MerpAdapter abstract class as DI token — abstract class survives runtime erasure unlike interface; NestJS DI resolves it
+- [Phase 01-foundation]: 01-03: MERP payload shapes are provisional — CreditMemoPayload/ReplacementOrderPayload must be validated against actual MERP API before v2 live integration
 
 ### Pending Todos
 
@@ -84,5 +89,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 01-02-PLAN.md — JWT guard chain, UsersService, branchScopeWhere, AppModule global guard complete
+Stopped at: Completed 01-03-PLAN.md — AuditService with transaction-enforced logEvent, MerpAdapter/MerpStubAdapter with DI token, AppModule final Phase 1 state
 Resume file: None
