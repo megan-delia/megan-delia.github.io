@@ -10,6 +10,11 @@ const config: Config = {
   testRegex: '.e2e.spec.ts$|.integration.spec.ts$',
   transform: { '^.+\\.(t|j)s$': 'ts-jest' },
   testEnvironment: 'node',
+  // Map .js imports to actual .ts files (required for nodenext module resolution with ts-jest)
+  moduleNameMapper: {
+    '^(\\.\\.\\.?/.*)\\.js$': '$1',
+  },
+  modulePaths: ['<rootDir>/src/'],
 };
 
 export default config;
