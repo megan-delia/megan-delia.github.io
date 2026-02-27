@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T20:46:12.670Z"
+last_updated: "2026-02-27T20:50:22Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 9
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 2 of 6 (Core RMA Lifecycle) — In Progress
-Plan: 1 of 5 in current phase — COMPLETE ✓
-Status: Plan 02-01 done — schema/types complete; Wave 2 plans (02-02 through 02-05) are unblocked
-Last activity: 2026-02-27 — Extended Prisma schema with Rma/RmaLine models; created rma.types.ts service contracts.
+Plan: 2 of 5 in current phase — COMPLETE ✓
+Status: Plan 02-02 done — state machine transition map and RMA repository complete; Wave 2 plans 02-03 through 02-05 unblocked
+Last activity: 2026-02-27 — Created rma-lifecycle.ts (ALLOWED_TRANSITIONS + assertValidTransition) and rma.repository.ts (all Rma/RmaLine DB operations).
 
-Progress: [████████░░] 22% (5/9 plans complete — Phase 1 4/4, Phase 2 1/5)
+Progress: [█████████░] 33% (6/9 plans complete — Phase 1 4/4, Phase 2 2/5)
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [████████░░] 22% (5/9 plans complete — Phase 1 4
 | Phase 01-foundation P03 | 3 | 2 tasks | 8 files |
 | Phase 01-foundation P04 | 9 | 5 tasks | 6 files |
 | Phase 02-core-rma-lifecycle P01 | 5 | 2 tasks | 3 files |
+| Phase 02-core-rma-lifecycle P02 | 3 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - [Phase 02-core-rma-lifecycle]: RmaActorContext declared in rma.types.ts to avoid circular import from users.service.ts
 - [Phase 02-core-rma-lifecycle]: qcInspectedAt DateTime? is disposition lock trigger — service enforces, no DB constraint for v1
 - [Phase 02-core-rma-lifecycle]: Over-receipt allowed — receivedQty uncapped; service may warn but never blocks receipt
+- [Phase 02-core-rma-lifecycle]: 02-02: ALLOWED_TRANSITIONS covers all 10 RmaStatus keys — TypeScript enforces completeness at compile time
+- [Phase 02-core-rma-lifecycle]: 02-02: Repository mutation methods accept tx param — service owns the transaction boundary; repository never calls $transaction()
 
 ### Pending Todos
 
@@ -99,5 +102,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-27
-Stopped at: Completed 02-01-PLAN.md — Prisma schema extended (Rma/RmaLine models + enums), rma.types.ts created, Wave 2 plans unblocked
+Stopped at: Completed 02-02-PLAN.md — rma-lifecycle.ts (state machine) and rma.repository.ts (DB operations) created; Wave 2 plans 02-03 through 02-05 unblocked
 Resume file: None
