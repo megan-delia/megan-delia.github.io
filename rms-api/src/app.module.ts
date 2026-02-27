@@ -5,6 +5,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { UsersModule } from './users/users.module.js';
+import { AuditModule } from './audit/audit.module.js';
+import { MerpModule } from './merp/merp.module.js';
 import { JwtAuthGuard } from './auth/jwt-auth.guard.js';
 import { validate } from './config/config.schema.js';
 
@@ -22,7 +24,8 @@ import { validate } from './config/config.schema.js';
     PrismaModule,
     UsersModule,
     AuthModule,
-    // AuditModule, MerpModule added in Plan 03
+    AuditModule,
+    MerpModule,
   ],
   providers: [
     // Apply JwtAuthGuard globally — every endpoint is JWT-protected by default.
