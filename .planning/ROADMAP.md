@@ -12,7 +12,7 @@ The RMS is built in six phases, each delivering one complete, verifiable capabil
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Database schema, project scaffold, auth middleware, RBAC skeleton, audit log design, and MERP adapter stubs — the infrastructure every feature depends on
+- [x] **Phase 1: Foundation** - Database schema, project scaffold, auth middleware, RBAC skeleton, audit log design, and MERP adapter stubs — the infrastructure every feature depends on
 - [ ] **Phase 2: Core RMA Lifecycle** - State machine, all RMA lifecycle transitions, line items with integer quantity tracking, and audit writes in the same DB transaction
 - [ ] **Phase 3: Workflow and Line Operations** - REST API layer, RBAC + data-ownership enforcement, workflow queues, contest flow, finance approval, and QC inspection recording
 - [ ] **Phase 4: Communication and Attachments** - Internal and customer-visible comment threads with server-enforced visibility, and document/photo attachments via presigned S3 URLs
@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. A user at Branch A cannot retrieve an RMA belonging to Branch B — the API returns 404, not the record
   4. Every state change writes an audit event in the same database transaction — no audit record exists without its corresponding state change, and no state change exists without its corresponding audit record
   5. The MERP adapter interface compiles with typed request/response contracts for credit memo and replacement order — stub bodies return structured mock responses
-**Plans**: TBD
+**Plans**: 4/4 complete (01-PLAN: Scaffold, 02-PLAN: Auth Guards, 03-PLAN: Audit+MERP, 04-PLAN: TDD Tests)
 
 ### Phase 2: Core RMA Lifecycle
 **Goal**: The complete RMA lifecycle state machine is authoritative, tested, and the only code path that writes RMA status
@@ -97,7 +97,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/4 | In Progress|  |
+| 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 0/TBD | Not started | - |
 | 3. Workflow and Line Operations | 0/TBD | Not started | - |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
