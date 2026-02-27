@@ -1,20 +1,29 @@
 import type { Config } from 'jest';
 
 // E2E and integration test configuration.
-// Covers *.e2e.spec.ts and *.integration.spec.ts files.
+// Covers *.e2e.spec.ts, *.integration.spec.ts, and merp-stub.spec.ts files.
+//
 // Run with: npm run test:e2e
-// Requires Docker and a running postgres container (see docker-compose.yml).
+// Requires:
+//   1. Docker Desktop installed and running
+//   2. docker compose up -d (postgres container healthy)
+//   3. DATABASE_URL env var set (e.g. in .env: DATABASE_URL=postgresql://...)
+//   4. npx prisma migrate deploy (migrations applied to test DB)
+//
+// Prisma 7 generates ESM-only client code (import.meta.url). This config
+// runs tests via Node.js --experimental-vm-modules to handle ESM/CJS interop.
 const config: Config = {
   moduleFileExtensions: ['js', 'json', 'ts'],
   rootDir: '.',
-  testRegex: '.e2e.spec.ts$|.integration.spec.ts$',
-  transform: { '^.+\\.(t|j)s$': 'ts-jest' },
+  testRegex: '.e2e.spec.ts$|.integration.spec.ts$|merp-stub.spec.ts$',
+  extensionsToTreatAsEsm: ['.ts'],
+  transform: {
+    '^.+\\.ts$': ['ts-jest', { useESM: true }],
+  },
   testEnvironment: 'node',
-  // Map .js imports to actual .ts files (required for nodenext module resolution with ts-jest)
   moduleNameMapper: {
     '^(\\.\\.\\.?/.*)\\.js$': '$1',
   },
-  modulePaths: ['<rootDir>/src/'],
 };
 
 export default config;
