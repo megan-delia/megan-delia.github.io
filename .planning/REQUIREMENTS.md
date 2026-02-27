@@ -36,7 +36,7 @@
 
 ### Workflow
 
-- [ ] **WKFL-01**: Branch Manager can view an approvals queue of all Submitted RMAs awaiting their decision and approve or reject from it
+- [x] **WKFL-01**: Branch Manager can view an approvals queue of all Submitted RMAs awaiting their decision and approve or reject from it
 - [x] **WKFL-02**: Customer can contest a Rejected RMA by providing a dispute reason, transitioning it to Contested
 - [x] **WKFL-03**: Branch Manager can review a Contested RMA and either overturn (→ Approved) or uphold (→ Rejected with a final documented note)
 - [x] **WKFL-04**: Finance staff can view and approve credit-disposition lines before an RMA transitions to Resolved
@@ -130,7 +130,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LINE-02 | Phase 2 — Core RMA Lifecycle | Complete |
 | LINE-03 | Phase 2 — Core RMA Lifecycle | Complete |
 | LINE-04 | Phase 3 — Workflow and Line Operations | Complete |
-| WKFL-01 | Phase 3 — Workflow and Line Operations | Pending |
+| WKFL-01 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-02 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-03 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-04 | Phase 3 — Workflow and Line Operations | Complete |
