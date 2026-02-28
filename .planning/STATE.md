@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T17:37:30Z"
+last_updated: "2026-02-28T17:41:36.606Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 16
-  completed_plans: 14
+  completed_plans: 15
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-27)
 ## Current Position
 
 Phase: 3.5 of 6 (Lifecycle HTTP Controller) — IN PROGRESS
-Plan: 1 of 3 in current phase — COMPLETE ✓
-Status: Plan 03.5-01 done — findManyBranchScoped and findByIdBranchScoped added to RmaRepository; npm run build 0 errors; closes read-path gap (INT-01/FOUND-03)
-Last activity: 2026-02-28 — Added findManyBranchScoped and findByIdBranchScoped to rma.repository.ts (+40 lines)
+Plan: 2 of 3 in current phase — COMPLETE ✓
+Status: Plan 03.5-02 done — LifecycleController with 14 endpoints created and registered in RmaModule; npm run build 0 errors; closes INT-01 INT-02 INT-03
+Last activity: 2026-02-28 — Created lifecycle.controller.ts (231 lines) + updated rma.module.ts
 
-Progress: [█████████████████░░░] ~76% (14/16 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 4/4, Phase 3.5 1/3)
+Progress: [██████████████████░░] ~82% (15/16 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 4/4, Phase 3.5 2/3)
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [█████████████████░░░] ~76% (1
 | Phase 03-workflow-and-line-operations P03 | 2 | 2 tasks | 4 files |
 | Phase 03-workflow-and-line-operations P04 | 3 | 1 tasks | 2 files |
 | Phase 03.5-lifecycle-http-controller P01 | 4 | 2 tasks | 1 files |
+| Phase 03.5-lifecycle-http-controller P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,8 @@ Recent decisions affecting current work:
 - [Phase 03-workflow-and-line-operations]: RmsUserContext and RmaActorContext are structurally identical — actor contexts satisfy both interfaces for service and repository calls
 - [Phase 03.5-lifecycle-http-controller]: 03.5-01: findByIdBranchScoped uses findFirst not findUnique — branchScopeWhere adds non-unique conditions Prisma cannot compose with findUnique
 - [Phase 03.5-lifecycle-http-controller]: 03.5-01: null return for missing and out-of-scope is intentional security boundary — controller maps to 404, not 403, never reveals cross-branch existence
+- [Phase 03.5-lifecycle-http-controller]: Per-method @Roles() only — lifecycle endpoints span multiple roles (RETURNS_AGENT, CUSTOMER, WAREHOUSE, QC, FINANCE, ADMIN) so class-level annotation is not viable
+- [Phase 03.5-lifecycle-http-controller]: LifecycleController injects both RmaService and RmaRepository — GET read endpoints go direct to repository; branch scope enforced by repository methods
 
 ### Pending Todos
 
@@ -135,5 +138,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 03.5-01-PLAN.md — findManyBranchScoped and findByIdBranchScoped added to RmaRepository; ready for Phase 3.5 Plan 02 (lifecycle HTTP controller)
+Stopped at: Completed 03.5-02-PLAN.md — LifecycleController with 14 endpoints created and registered in RmaModule; ready for Phase 3.5 Plan 03 (e2e/integration tests)
 Resume file: None
