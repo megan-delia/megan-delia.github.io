@@ -132,7 +132,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
 | 3. Workflow and Line Operations | 4/4 | Complete   | 2026-02-27 |
-| 3.5. Lifecycle HTTP Controller *(gap closure)* | 0/3 | Not started | - |
+| 3.5. Lifecycle HTTP Controller *(gap closure)* | 1/3 | In Progress|  |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
 | 6. Customer Self-Service Portal | 0/TBD | Not started | - |

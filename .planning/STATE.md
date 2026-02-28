@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-27T22:13:46.295Z"
+last_updated: "2026-02-28T17:37:30Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 3
-  total_plans: 13
-  completed_plans: 13
+  total_plans: 16
+  completed_plans: 14
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-27)
 
 **Core value:** Every return moves faster — from submission to resolution — because every person involved can see exactly where it is and what's blocking it.
-**Current focus:** Phase 3 — Workflow and Line Operations
+**Current focus:** Phase 3.5 — Lifecycle HTTP Controller
 
 ## Current Position
 
-Phase: 3 of 6 (Workflow and Line Operations) — COMPLETE ✓
-Plan: 4 of 4 in current phase — COMPLETE ✓
-Status: Plan 03-04 done — workflow.integration.spec.ts created with 16 integration tests covering WKFL-01 through WKFL-05 and LINE-04; Phase 3 complete; tsc --noEmit 0 errors; npm run build 0 errors; 41/41 Phase 2 unit tests passing
-Last activity: 2026-02-27 — Created workflow.integration.spec.ts (+695 lines); fixed rma.service.integration.spec.ts (7 recordQcInspection calls updated for Phase 3 type)
+Phase: 3.5 of 6 (Lifecycle HTTP Controller) — IN PROGRESS
+Plan: 1 of 3 in current phase — COMPLETE ✓
+Status: Plan 03.5-01 done — findManyBranchScoped and findByIdBranchScoped added to RmaRepository; npm run build 0 errors; closes read-path gap (INT-01/FOUND-03)
+Last activity: 2026-02-28 — Added findManyBranchScoped and findByIdBranchScoped to rma.repository.ts (+40 lines)
 
-Progress: [████████████████░░░░] ~72% (16/22 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 4/4)
+Progress: [█████████████████░░░] ~76% (14/16 plans est. — Phase 1 4/4, Phase 2 5/5, Phase 3 4/4, Phase 3.5 1/3)
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ Progress: [████████████████░░░░] ~72% (1
 | Phase 03-workflow-and-line-operations P02 | 3 | 2 tasks | 2 files |
 | Phase 03-workflow-and-line-operations P03 | 2 | 2 tasks | 4 files |
 | Phase 03-workflow-and-line-operations P04 | 3 | 1 tasks | 2 files |
+| Phase 03.5-lifecycle-http-controller P01 | 4 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -115,6 +116,8 @@ Recent decisions affecting current work:
 - [Phase 03-workflow-and-line-operations]: RecordQcInspectionInput.lineId required in Phase 3 — Phase 2 integration test calls updated to include lineId and replace qcNotes with qcFindings
 - [Phase 03-workflow-and-line-operations]: Two-branch fixture (branchA + branchB) used for cross-branch isolation test in workflow integration spec
 - [Phase 03-workflow-and-line-operations]: RmsUserContext and RmaActorContext are structurally identical — actor contexts satisfy both interfaces for service and repository calls
+- [Phase 03.5-lifecycle-http-controller]: 03.5-01: findByIdBranchScoped uses findFirst not findUnique — branchScopeWhere adds non-unique conditions Prisma cannot compose with findUnique
+- [Phase 03.5-lifecycle-http-controller]: 03.5-01: null return for missing and out-of-scope is intentional security boundary — controller maps to 404, not 403, never reveals cross-branch existence
 
 ### Pending Todos
 
@@ -131,6 +134,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-02-27
-Stopped at: Completed 03-04-PLAN.md — workflow.integration.spec.ts with 16 integration tests for WKFL-01 through WKFL-05 and LINE-04; Phase 3 complete; ready for Phase 4 (MERP integration)
+Last session: 2026-02-28
+Stopped at: Completed 03.5-01-PLAN.md — findManyBranchScoped and findByIdBranchScoped added to RmaRepository; ready for Phase 3.5 Plan 02 (lifecycle HTTP controller)
 Resume file: None

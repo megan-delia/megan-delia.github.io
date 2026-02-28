@@ -15,23 +15,23 @@
 
 ### Lifecycle
 
-- [ ] **LCYC-01**: Returns Agent can create a new RMA in Draft status
-- [ ] **LCYC-02**: Returns Agent or Customer can submit a Draft RMA, transitioning it to Submitted
+- [x] **LCYC-01**: Returns Agent can create a new RMA in Draft status
+- [x] **LCYC-02**: Returns Agent or Customer can submit a Draft RMA, transitioning it to Submitted
 - [x] **LCYC-03**: Branch Manager can approve a Submitted RMA, transitioning it to Approved
 - [x] **LCYC-04**: Branch Manager can reject a Submitted RMA with a required reason, transitioning it to Rejected
-- [ ] **LCYC-05**: Returns Agent can place an RMA in Info Required status to request additional information from the submitter without hard-rejecting
-- [ ] **LCYC-06**: Customer or staff can respond to an Info Required request, returning the RMA to Submitted
-- [ ] **LCYC-07**: Warehouse staff can record physical receipt of goods on an Approved RMA, transitioning it to Received
-- [ ] **LCYC-08**: QC staff can complete inspection on a Received RMA, transitioning it to QC status
-- [ ] **LCYC-09**: Returns Agent or Finance can resolve a QC-complete RMA, transitioning it to Resolved
-- [ ] **LCYC-10**: Returns Agent or Admin can close a Resolved RMA, transitioning it to Closed
-- [ ] **LCYC-11**: Returns Agent or Admin can cancel an RMA in Draft, Submitted, or Approved status with a required cancellation reason
+- [x] **LCYC-05**: Returns Agent can place an RMA in Info Required status to request additional information from the submitter without hard-rejecting
+- [x] **LCYC-06**: Customer or staff can respond to an Info Required request, returning the RMA to Submitted
+- [x] **LCYC-07**: Warehouse staff can record physical receipt of goods on an Approved RMA, transitioning it to Received
+- [x] **LCYC-08**: QC staff can complete inspection on a Received RMA, transitioning it to QC status
+- [x] **LCYC-09**: Returns Agent or Finance can resolve a QC-complete RMA, transitioning it to Resolved
+- [x] **LCYC-10**: Returns Agent or Admin can close a Resolved RMA, transitioning it to Closed
+- [x] **LCYC-11**: Returns Agent or Admin can cancel an RMA in Draft, Submitted, or Approved status with a required cancellation reason
 
 ### Line Items
 
-- [ ] **LINE-01**: Returns Agent can add multiple line items to an RMA, each with part number, quantity, and structured reason code
-- [ ] **LINE-02**: Each RMA line can be assigned a disposition type: credit, replacement, scrap, or RTV
-- [ ] **LINE-03**: System tracks received quantity and QC-inspected quantity as integers per line (not boolean flags), enabling partial receipt
+- [x] **LINE-01**: Returns Agent can add multiple line items to an RMA, each with part number, quantity, and structured reason code
+- [x] **LINE-02**: Each RMA line can be assigned a disposition type: credit, replacement, scrap, or RTV
+- [x] **LINE-03**: System tracks received quantity and QC-inspected quantity as integers per line (not boolean flags), enabling partial receipt
 - [x] **LINE-04**: Returns Agent can split one RMA line into multiple lines with different dispositions or quantities
 
 ### Workflow
@@ -115,20 +115,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FOUND-03 | Phase 1 — Foundation | Complete |
 | FOUND-04 | Phase 1 — Foundation | Complete |
 | FOUND-05 | Phase 1 — Foundation | Complete |
-| LCYC-01 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-02 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
+| LCYC-01 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-02 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
 | LCYC-03 | Phase 2 — Core RMA Lifecycle | Complete |
 | LCYC-04 | Phase 2 — Core RMA Lifecycle | Complete |
-| LCYC-05 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-06 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-07 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-08 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-09 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-10 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LCYC-11 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LINE-01 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LINE-02 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
-| LINE-03 | Phase 3.5 — Lifecycle HTTP Controller | Pending |
+| LCYC-05 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-06 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-07 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-08 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-09 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-10 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LCYC-11 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LINE-01 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LINE-02 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
+| LINE-03 | Phase 3.5 — Lifecycle HTTP Controller | Complete |
 | LINE-04 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-01 | Phase 3 — Workflow and Line Operations | Complete |
 | WKFL-02 | Phase 3 — Workflow and Line Operations | Complete |
