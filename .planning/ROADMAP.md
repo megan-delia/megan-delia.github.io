@@ -87,7 +87,7 @@ Plans:
 Plans:
 - [ ] 03.5-01-PLAN.md — Add findManyBranchScoped and findByIdBranchScoped repository methods (branch-scoped reads)
 - [ ] 03.5-02-PLAN.md — Create lifecycle.controller.ts (14 endpoints) and wire into RmaModule
-- [ ] 03.5-03-PLAN.md — Vitest integration tests for all 13 Phase 3.5 requirements (LCYC-01/02/05-11, LINE-01/02/03, WKFL-04)
+- [x] 03.5-03-PLAN.md — Vitest integration tests for all 13 Phase 3.5 requirements (LCYC-01/02/05-11, LINE-01/02/03, WKFL-04) (completed 2026-02-28)
 
 ### Phase 4: Communication and Attachments
 **Goal**: Internal staff and customers can communicate on RMAs through a thread system where visibility is enforced server-side, and documents or photos can be attached and retrieved
@@ -132,7 +132,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation | 4/4 | Complete   | 2026-02-27 |
 | 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
 | 3. Workflow and Line Operations | 4/4 | Complete   | 2026-02-27 |
-| 3.5. Lifecycle HTTP Controller *(gap closure)* | 3/3 | Complete   | 2026-02-28 |
+| 3.5. Lifecycle HTTP Controller *(gap closure)* | 3/3 | Complete    | 2026-02-28 |
 | 4. Communication and Attachments | 0/TBD | Not started | - |
 | 5. Workspace and Dashboards | 0/TBD | Not started | - |
 | 6. Customer Self-Service Portal | 0/TBD | Not started | - |
