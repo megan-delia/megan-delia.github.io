@@ -303,4 +303,25 @@ export class RmaRepository {
       rmaStatus: l.rma.status as string,
     }));
   }
+
+  /**
+   * LCYC-01/LCYC-02: Branch-scoped RMA list for GET /rmas.
+   * Admin users receive all RMAs (branchScopeWhere returns {}); all other roles
+   * are filtered to their assigned branches.
+   */
+  async findManyBranchScoped(
+    user: RmsUserContext,
+    options?: { status?: RmaStatus; take?: number; skip?: number },
+  ): Promise<RmaWithLines[]> {
+    return this.prisma.rma.findMany({
+      where: {
+        ...branchScopeWhere(user),
+        ...(options?.status ? { status: options.status } : {}),
+      },
+      include: { lines: true },
+      orderBy: { createdAt: 'desc' },
+      take: options?.take ?? 50,
+      skip: options?.skip ?? 0,
+    });
+  }
 }
