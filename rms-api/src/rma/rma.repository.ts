@@ -324,4 +324,23 @@ export class RmaRepository {
       skip: options?.skip ?? 0,
     });
   }
+
+  /**
+   * LCYC-05: Branch-scoped single-RMA fetch for GET /rmas/:id.
+   * Uses findFirst (not findUnique) so branchScopeWhere can be composed into
+   * the where clause alongside the id filter.
+   *
+   * Returns null when the RMA does not exist OR belongs to another branch —
+   * intentionally indistinguishable so callers map null → 404 (not 403),
+   * never revealing whether a record exists outside the caller's scope.
+   */
+  async findByIdBranchScoped(id: string, user: RmsUserContext): Promise<RmaWithLines | null> {
+    return this.prisma.rma.findFirst({
+      where: {
+        id,
+        ...branchScopeWhere(user),
+      },
+      include: { lines: true },
+    });
+  }
 }
