@@ -1,97 +1,35 @@
 # Roadmap: Returns Management System (RMS)
 
-## Overview
+## Milestones
 
-The RMS is built in six phases, each delivering one complete, verifiable capability. The sequence is dependency-driven: foundation infrastructure must be correct before any workflow feature is built on top of it, and the state machine must be correct before any API endpoint or UI component is built on top of it. Phases 1-3 are exclusively backend; Phases 4-6 add the full application surface that staff and customers see. Every phase ends with something a human can verify is working.
+- ✅ **v1.0 MVP** — Phases 1–3.5 (shipped 2026-02-28)
+- 📋 **v1.1** — Phases 4–6 (planned)
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+<details>
+<summary>✅ v1.0 MVP (Phases 1–3.5) — SHIPPED 2026-02-28</summary>
 
-Decimal phases appear between their surrounding integers in numeric order.
+- [x] Phase 1: Foundation (4/4 plans) — completed 2026-02-27
+- [x] Phase 2: Core RMA Lifecycle (5/5 plans) — completed 2026-02-27
+- [x] Phase 3: Workflow and Line Operations (4/4 plans) — completed 2026-02-27
+- [x] Phase 3.5: Lifecycle HTTP Controller *(INSERTED — gap closure)* (3/3 plans) — completed 2026-02-28
 
-- [x] **Phase 1: Foundation** - Database schema, project scaffold, auth middleware, RBAC skeleton, audit log design, and MERP adapter stubs — the infrastructure every feature depends on
-- [x] **Phase 2: Core RMA Lifecycle** - State machine, all RMA lifecycle transitions, line items with integer quantity tracking, and audit writes in the same DB transaction (completed 2026-02-27)
-- [x] **Phase 3: Workflow and Line Operations** - REST API layer, RBAC + data-ownership enforcement, workflow queues, contest flow, finance approval, and QC inspection recording (completed 2026-02-27)
-- [x] **Phase 3.5: Lifecycle HTTP Controller** *(INSERTED — gap closure)* - HTTP controller exposing all Phase 2 lifecycle service methods over REST with RBAC guards, completing the v1.0 HTTP surface (completed 2026-02-28)
+Full details: `.planning/milestones/v1.0-ROADMAP.md`
+
+</details>
+
+### 📋 v1.1 (Planned)
+
 - [ ] **Phase 4: Communication and Attachments** - Internal and customer-visible comment threads with server-enforced visibility, and document/photo attachments via presigned S3 URLs
 - [ ] **Phase 5: Workspace and Dashboards** - Returns workspace with filtering and search, manager aging and exceptions dashboards, and the React frontend foundation that surfaces all prior backend work
 - [ ] **Phase 6: Customer Self-Service Portal** - External customer submission, status tracking, RMA detail view, and customer-visible messaging through the portal
 
 ## Phase Details
 
-### Phase 1: Foundation
-**Goal**: The project scaffolding, database schema, and cross-cutting infrastructure are correct — before any feature is built
-**Depends on**: Nothing (first phase)
-**Requirements**: FOUND-01, FOUND-02, FOUND-03, FOUND-04, FOUND-05
-**Success Criteria** (what must be TRUE):
-  1. A Returns Agent can authenticate into the RMS using their host portal session without a second login prompt
-  2. A user with the Customer role cannot access an endpoint restricted to Returns Agents — the API returns a 403 response
-  3. A user at Branch A cannot retrieve an RMA belonging to Branch B — the API returns 404, not the record
-  4. Every state change writes an audit event in the same database transaction — no audit record exists without its corresponding state change, and no state change exists without its corresponding audit record
-  5. The MERP adapter interface compiles with typed request/response contracts for credit memo and replacement order — stub bodies return structured mock responses
-**Plans**: 4/4 complete (01-PLAN: Scaffold, 02-PLAN: Auth Guards, 03-PLAN: Audit+MERP, 04-PLAN: TDD Tests)
-
-### Phase 2: Core RMA Lifecycle
-**Goal**: The complete RMA lifecycle state machine is authoritative, tested, and the only code path that writes RMA status
-**Depends on**: Phase 1
-**Requirements**: LCYC-01, LCYC-02, LCYC-03, LCYC-04, LCYC-05, LCYC-06, LCYC-07, LCYC-08, LCYC-09, LCYC-10, LCYC-11, LINE-01, LINE-02, LINE-03
-**Success Criteria** (what must be TRUE):
-  1. A Returns Agent can create a Draft RMA with multiple line items (each with part number, quantity, and reason code) and submit it — the RMA transitions to Submitted
-  2. A Branch Manager can approve a Submitted RMA (transitioning to Approved), reject it with a required reason (transitioning to Rejected), or place it in Info Required — and those are the only transitions available from Submitted
-  3. An attempt to transition an RMA to any state not permitted from its current state returns an error — no impossible states are reachable through the API
-  4. Warehouse staff can record physical receipt on an Approved RMA using an integer received quantity per line (not a checkbox) — partial receipt is recordable
-  5. QC staff can complete inspection on a Received RMA, and a Returns Agent or Finance user can resolve it — the RMA reaches Closed only after passing through QC and Resolved
-**Plans**: 5 plans
-
-Plans:
-- [x] 02-01-PLAN.md — Extend Prisma schema (Rma, RmaLine, RmaStatus, DispositionType) and create rma.types.ts input contracts
-- [x] 02-02-PLAN.md — State machine (ALLOWED_TRANSITIONS, assertValidTransition) and RmaRepository DB operations
-- [x] 02-03-PLAN.md — RmaModule, RmaService draft path: createDraft, submit, placeInfoRequired, resubmit, cancel, addLine, updateLine, removeLine
-- [x] 02-04-PLAN.md — RmaService completion: approve, reject, recordReceipt, recordQcInspection, completeQc, resolve, close
-- [x] 02-05-PLAN.md — TDD: Jest unit tests (state machine + guards) and Vitest integration tests (all 14 LCYC/LINE requirements against real DB)
-
-### Phase 3: Workflow and Line Operations
-**Goal**: Role-gated workflow queues, contest flow, Finance approval, QC inspection recording, and line splitting are accessible through a REST API with full RBAC and data-ownership enforcement
-**Depends on**: Phase 2
-**Requirements**: LINE-04, WKFL-01, WKFL-02, WKFL-03, WKFL-04, WKFL-05
-**Success Criteria** (what must be TRUE):
-  1. A Branch Manager sees only Submitted RMAs they are authorized to approve in their approvals queue — no cross-branch RMAs appear, and they can approve or reject directly from the queue
-  2. A customer can contest a Rejected RMA by providing a dispute reason — the RMA moves to Contested, and a Branch Manager can overturn or uphold it with a documented note
-  3. Finance staff can view all RMA lines with a credit disposition and approve them before the RMA transitions to Resolved
-  4. QC staff can record per-line inspection results (pass/fail, findings, disposition recommendation) on a Received RMA
-  5. A Returns Agent can split one RMA line into multiple lines with different dispositions or quantities — the split lines persist and the original line is replaced
-**Plans**: 4 plans
-
-Plans:
-- [x] 03-01-PLAN.md — Prisma schema extension (CONTESTED state + Finance/QC fields) and Phase 3 type contracts (completed 2026-02-27)
-- [ ] 03-02-PLAN.md — RmaService Phase 3 methods (contest, overturn, uphold, splitLine, approveLineCredit) and RmaRepository queue queries
-- [ ] 03-03-PLAN.md — NestJS controllers (rma.controller.ts, workflow.controller.ts, finance.controller.ts) and RmaModule wiring
-- [ ] 03-04-PLAN.md — Vitest integration tests for all 6 Phase 3 requirements (WKFL-01 through WKFL-05, LINE-04)
-
-### Phase 3.5: Lifecycle HTTP Controller *(INSERTED — gap closure)*
-**Goal**: All Phase 2 lifecycle service methods are reachable over HTTP with correct RBAC guards — completing the v1.0 HTTP surface and closing all integration gaps found in the milestone audit
-**Depends on**: Phase 3
-**Requirements**: LCYC-01, LCYC-02, LCYC-05, LCYC-06, LCYC-07, LCYC-08, LCYC-09, LCYC-10, LCYC-11, LINE-01, LINE-02, LINE-03, WKFL-04
-**Gap Closure**: Closes INT-01, INT-02, INT-03 from v1.0-MILESTONE-AUDIT.md; unblocks Flow 1 (Full RMA Lifecycle) and Flow 2 (Finance gate resolve step)
-**Success Criteria** (what must be TRUE):
-  1. A Returns Agent can create a Draft RMA and submit it via HTTP (`POST /rmas`, `POST /rmas/:id/submit`) — the full lifecycle flow is reachable end-to-end
-  2. All state transition endpoints (cancel, info-required, resubmit, receive, complete-qc, resolve, close) return correct HTTP status codes and enforce the right roles
-  3. Line item endpoints (add, update, remove) are reachable over HTTP with RETURNS_AGENT role enforcement
-  4. GET /rmas and GET /rmas/:id return branch-scoped results — a user at Branch A cannot retrieve Branch B RMAs
-  5. Finance gate flow completes end-to-end: Finance approves credit lines → `POST /rmas/:id/resolve` transitions RMA to Resolved
-**Plans**: 3 plans
-
-Plans:
-- [ ] 03.5-01-PLAN.md — Add findManyBranchScoped and findByIdBranchScoped repository methods (branch-scoped reads)
-- [ ] 03.5-02-PLAN.md — Create lifecycle.controller.ts (14 endpoints) and wire into RmaModule
-- [x] 03.5-03-PLAN.md — Vitest integration tests for all 13 Phase 3.5 requirements (LCYC-01/02/05-11, LINE-01/02/03, WKFL-04) (completed 2026-02-28)
-
 ### Phase 4: Communication and Attachments
 **Goal**: Internal staff and customers can communicate on RMAs through a thread system where visibility is enforced server-side, and documents or photos can be attached and retrieved
-**Depends on**: Phase 3
+**Depends on**: Phase 3 (v1.0 complete)
 **Requirements**: COMM-01, COMM-02, COMM-03, COMM-04, ATTC-01, ATTC-02
 **Success Criteria** (what must be TRUE):
   1. A Returns Agent can add an internal note to an RMA — when that RMA is fetched by a Customer-role user, zero internal notes appear in the API response
@@ -124,15 +62,12 @@ Plans:
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Foundation | 4/4 | Complete   | 2026-02-27 |
-| 2. Core RMA Lifecycle | 5/5 | Complete   | 2026-02-27 |
-| 3. Workflow and Line Operations | 4/4 | Complete   | 2026-02-27 |
-| 3.5. Lifecycle HTTP Controller *(gap closure)* | 3/3 | Complete    | 2026-02-28 |
-| 4. Communication and Attachments | 0/TBD | Not started | - |
-| 5. Workspace and Dashboards | 0/TBD | Not started | - |
-| 6. Customer Self-Service Portal | 0/TBD | Not started | - |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Foundation | v1.0 | 4/4 | Complete | 2026-02-27 |
+| 2. Core RMA Lifecycle | v1.0 | 5/5 | Complete | 2026-02-27 |
+| 3. Workflow and Line Operations | v1.0 | 4/4 | Complete | 2026-02-27 |
+| 3.5. Lifecycle HTTP Controller *(gap closure)* | v1.0 | 3/3 | Complete | 2026-02-28 |
+| 4. Communication and Attachments | v1.1 | 0/TBD | Not started | - |
+| 5. Workspace and Dashboards | v1.1 | 0/TBD | Not started | - |
+| 6. Customer Self-Service Portal | v1.1 | 0/TBD | Not started | - |
