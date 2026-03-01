@@ -1,0 +1,903 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   styles.css — Supplier Interactive Display
+   Shared stylesheet for all three pages (Page 1, Page 2, Admin)
+   Optimized for TV resolution (1920×1080)
+   ══════════════════════════════════════════════════════════════════════════════
+
+   [BRAND] markers indicate every location where Master Electronics official
+   brand assets (colors, fonts, logo) should be substituted when provided.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── DESIGN TOKENS ─────────────────────────────────────────────────────────── */
+:root {
+  /* ── Background palette ─────────────────────────────────────────────────── */
+  /* [BRAND] Replace these with Master Electronics official background colors */
+  --bg-page:      #0d1117;  /* Deep page background */
+  --bg-surface:   #161b22;  /* Section/panel background */
+  --bg-card:      #1c2333;  /* Card surface */
+  --bg-card-hover:#212d40;  /* Card hover state */
+
+  /* ── Accent colors ──────────────────────────────────────────────────────── */
+  /* [BRAND] Replace with Master Electronics primary and secondary brand colors */
+  --accent-primary:   #2f81f7;  /* Primary interactive color (blue) */
+  --accent-secondary: #3fb950;  /* Secondary / success color (green) */
+  --accent-gold:      #e3b341;  /* Highlight / metric number color */
+  --accent-danger:    #f85149;  /* Error / danger state */
+
+  /* ── Text ───────────────────────────────────────────────────────────────── */
+  --text-primary: #e6edf3;  /* Body text */
+  --text-muted:   #8b949e;  /* Secondary / label text */
+  --text-inverse: #0d1117;  /* Text on light backgrounds */
+
+  /* ── Borders / Dividers ─────────────────────────────────────────────────── */
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-accent:  rgba(47, 129, 247, 0.35);
+
+  /* ── Shape ──────────────────────────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-pill: 999px;
+
+  /* ── Typography ─────────────────────────────────────────────────────────── */
+  /* [BRAND] Replace font-family with Master Electronics brand typeface */
+  --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-base:   20px;  /* TV readability: larger than standard web (16px) */
+
+  /* ── Transitions ────────────────────────────────────────────────────────── */
+  --transition-fast: 0.15s ease;
+  --transition-std:  0.25s ease;
+
+  /* ── Shadows ────────────────────────────────────────────────────────────── */
+  --shadow-card:  0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.55);
+  --shadow-modal: 0 16px 48px rgba(0, 0, 0, 0.7);
+}
+
+
+/* ── RESET & BASE ──────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-base);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  /* Target 1920×1080 — center on wider displays */
+  max-width: 1920px;
+  margin: 0 auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* ── PAGE CONTAINER ────────────────────────────────────────────────────────── */
+/* Used by Page 1 and Page 2. Admin overrides max-width inline. */
+.page-container {
+  padding: 2.5rem 4rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ── PAGE HEADER ───────────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+/* [BRAND] Replace this placeholder with <img src="./logo.png" alt="Master Electronics">
+   when the official logo file is provided. Remove the border and padding then. */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  /* Placeholder styling — remove border when real logo is present */
+  border: 2px dashed var(--border-default);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-md);
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+
+/* ── BUTTONS ───────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* [BRAND] Replace gradient with Master Electronics primary brand color */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), #388bfd);
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(47, 129, 247, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  padding: 0.6rem 1rem;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-sm {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.8rem;
+}
+
+
+/* ── GLASS CARD ────────────────────────────────────────────────────────────── */
+/* Used for the 4 metric boxes on Page 2 and the admin table container */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 2rem 2.25rem;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-std), background var(--transition-std);
+}
+
+.glass-card:hover {
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-hover);
+}
+
+.card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+}
+
+
+/* ── MODAL ─────────────────────────────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  /* Hidden by default — toggled via .is-visible */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-std);
+}
+
+.modal-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 3rem;
+  max-width: 580px;
+  width: 90%;
+  box-shadow: var(--shadow-modal);
+  transform: scale(0.94) translateY(8px);
+  transition: transform var(--transition-std);
+}
+
+.modal-backdrop.is-visible .modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.modal-body {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.modal-body strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PAGE 1 — SUPPLIER SELECTION
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.selection-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0 4rem;
+  gap: 1rem;
+}
+
+.selection-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.selection-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ── Searchable Dropdown ─────────────────────────────────────────────────── */
+.dropdown-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+}
+
+.dropdown-input {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.dropdown-input::placeholder {
+  color: var(--text-muted);
+}
+
+.dropdown-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.18);
+}
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  /* TV-friendly: tall enough to show ~12 items at once */
+  max-height: 520px;
+  overflow-y: auto;
+  z-index: 200;
+  box-shadow: var(--shadow-modal);
+  /* Hidden by default */
+  display: none;
+}
+
+.dropdown-list.is-open {
+  display: block;
+}
+
+/* Custom scrollbar for the dropdown */
+.dropdown-list::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdown-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.dropdown-item {
+  padding: 0.85rem 1.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover,
+.dropdown-item.is-highlighted {
+  background: var(--bg-card);
+  color: var(--accent-primary);
+}
+
+/* Hidden items during search filter */
+.dropdown-item.is-hidden {
+  display: none;
+}
+
+.dropdown-empty {
+  padding: 1.25rem 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Supplier count hint shown below the input */
+.supplier-count-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 0.4rem;
+  min-height: 1.2em;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PAGE 2 — SUPPLIER DATA DISPLAY
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Supplier Headline ───────────────────────────────────────────────────── */
+.supplier-headline {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.25;
+  margin-bottom: 1.75rem;
+  /* [BRAND] Replace gradient stops with Master Electronics brand colors */
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex-shrink: 0;
+}
+
+/* ── 2×2 Metrics Grid ────────────────────────────────────────────────────── */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+  flex: 1;
+  margin-bottom: 1.5rem;
+  /* Ensure grid fills the available space evenly on TV */
+  min-height: 0;
+}
+
+/* ── Box 1: Top 5 Branches ───────────────────────────────────────────────── */
+.branches-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  counter-reset: branch-rank;
+}
+
+.branch-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+  counter-increment: branch-rank;
+}
+
+.branch-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(47, 129, 247, 0.12);
+  /* [BRAND] Replace accent color */
+  color: var(--accent-primary);
+  font-weight: 800;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.branch-name {
+  color: var(--text-primary);
+}
+
+/* ── Box 2: SKU Count ────────────────────────────────────────────────────── */
+.sku-display {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+}
+
+.metric-large-number {
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  /* [BRAND] Replace with Master Electronics accent/highlight color */
+  color: var(--accent-gold);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.metric-unit {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Boxes 3 & 4: Split Bars ─────────────────────────────────────────────── */
+.split-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.split-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.split-row-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.split-row-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.split-row-pct {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.split-bar-track {
+  height: 9px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.split-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  /* [BRAND] Replace gradient with Master Electronics brand colors */
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  width: 0%;  /* Set by JS to trigger CSS transition */
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Real-Time Active Lines Bar ──────────────────────────────────────────── */
+.realtime-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.1rem 2rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(63, 185, 80, 0.25);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+  /* Hidden when count = 0 or query fails — NO placeholder shown */
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition:
+    opacity var(--transition-std),
+    max-height var(--transition-std),
+    padding var(--transition-std);
+}
+
+.realtime-bar.is-visible {
+  visibility: visible;
+  opacity: 1;
+  max-height: 80px;
+  padding: 1.1rem 2rem;
+}
+
+.realtime-pulse {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.realtime-pulse-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  position: absolute;
+  top: 0; left: 0;
+}
+
+.realtime-pulse-ring {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent-secondary);
+  position: absolute;
+  top: 0; left: 0;
+  animation: realtime-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes realtime-ping {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  75%  { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.realtime-label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.realtime-count {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--accent-secondary);
+  letter-spacing: -0.02em;
+}
+
+.realtime-sublabel {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  font-style: italic;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   ADMIN PAGE — PARTNERSHIP DATES
+   (NOT TV-optimized — desktop/back-office use)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.admin-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  line-height: 1.5;
+}
+
+.save-status {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-secondary);
+  opacity: 0;
+  transition: opacity var(--transition-std);
+  white-space: nowrap;
+}
+
+.save-status.is-visible {
+  opacity: 1;
+}
+
+/* Admin table wrapper */
+.admin-table-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.admin-table thead tr {
+  background: var(--bg-surface);
+}
+
+.admin-table th {
+  padding: 0.85rem 1.25rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.admin-table td {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-default);
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.supplier-name-cell {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.supplier-id-cell {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.admin-date-input {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.admin-date-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.status-signed {
+  background: rgba(63, 185, 80, 0.12);
+  color: var(--accent-secondary);
+}
+
+.status-unsigned {
+  background: rgba(139, 148, 158, 0.1);
+  color: var(--text-muted);
+}
+
+/* Admin search/filter bar */
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-search {
+  flex: 1;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-family: var(--font-family);
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.admin-search:focus {
+  border-color: var(--accent-primary);
+}
+
+.admin-search::placeholder {
+  color: var(--text-muted);
+}
+
+.admin-count {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-accent {
+  color: var(--accent-primary);
+}
+
+.mt-auto {
+  margin-top: auto;
+}
+
+/* Loading state overlay (used when async data is in flight) */
+.loading-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-default);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

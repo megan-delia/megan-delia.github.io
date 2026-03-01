@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier Portal | Master Electronics</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+      <!-- [BRAND] Replace with: <img src="./logo.png" alt="Master Electronics" class="brand-logo"> -->
+      <div class="brand-logo">Master Electronics</div>
+
+      <!-- Returns to the Norovision Timeline homepage. href set by selection.js from config.js -->
+      <a id="norovision-btn" href="#" class="btn btn-secondary">
+        &#8592; Return to Norovision
+      </a>
+    </header>
+
+    <!-- MAIN SELECTION AREA -->
+    <main class="selection-main" id="selection-main">
+
+      <h1 class="selection-title">Supplier Portal</h1>
+      <p class="selection-subtitle">Select a supplier to view partnership &amp; performance data</p>
+
+      <!-- SEARCHABLE DROPDOWN -->
+      <div class="dropdown-wrapper" id="dropdown-wrapper">
+        <label for="supplier-search" class="visually-hidden">Search or select a supplier</label>
+        <input
+          type="text"
+          id="supplier-search"
+          class="dropdown-input"
+          placeholder="Search by name or scroll to select..."
+          autocomplete="off"
+          spellcheck="false"
+          aria-autocomplete="list"
+          aria-controls="supplier-list"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          role="combobox"
+        >
+        <ul
+          id="supplier-list"
+          class="dropdown-list"
+          role="listbox"
+          aria-label="Supplier list"
+        >
+          <!-- Items populated by selection.js -->
+        </ul>
+      </div>
+
+      <!-- Supplier count hint below the input -->
+      <p id="supplier-count-hint" class="supplier-count-hint"></p>
+
+    </main>
+
+  </div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div
+    id="confirm-modal"
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-modal-title"
+  >
+    <div class="modal-box">
+      <div class="modal-icon">&#128203;</div>
+      <h2 class="modal-title" id="confirm-modal-title">Confirm Selection</h2>
+      <p class="modal-body">
+        Are you sure you want to view data for
+        <strong id="confirm-supplier-name"></strong>?
+      </p>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+        <button id="modal-confirm" class="btn btn-primary">View Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: config and data must load before selection.js runs -->
+  <script src="./config.js"></script>
+  <script src="./mock-data.js"></script>
+  <script src="./selection.js" defer></script>
+
+</body>
+</html>

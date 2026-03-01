@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partnership Dates – Admin | Master Electronics</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+  <div class="admin-container">
+
+    <!-- ADMIN HEADER -->
+    <header class="admin-header">
+      <!-- [BRAND] Replace text with <img src="./logo.png" alt="Master Electronics"> -->
+      <div class="brand-logo" style="border: none; padding: 0; font-size: 1rem;">
+        <!-- [BRAND] Logo placeholder -->
+        Master Electronics &nbsp;·&nbsp; <span style="color: var(--text-muted); font-weight: 400;">Supplier Admin</span>
+      </div>
+      <div class="admin-header-actions">
+        <span id="save-status" class="save-status">✓ Saved successfully</span>
+        <a href="./index.html" class="btn btn-ghost btn-sm">← Back to Display</a>
+        <button id="save-btn" class="btn btn-primary btn-sm">Save All Dates</button>
+      </div>
+    </header>
+
+    <!-- PAGE TITLE -->
+    <h1 class="page-title" style="font-size: 1.4rem; margin-bottom: 0.5rem;">Partnership Signed Dates</h1>
+
+    <!-- NOTE -->
+    <p class="admin-note">
+      <strong>Prototype note:</strong> Dates entered here are stored in this browser's localStorage.
+      They are read by the Supplier Display (Page 2) to calculate "Years of Partnership."
+      Production deployment will persist these to a database API.
+      &nbsp;|&nbsp; All dates saved here take priority over mock data defaults.
+    </p>
+
+    <!-- TOOLBAR: search + count -->
+    <div class="admin-toolbar">
+      <input
+        type="text"
+        id="admin-search"
+        class="admin-search"
+        placeholder="Filter suppliers by name..."
+        autocomplete="off"
+      >
+      <span id="admin-count" class="admin-count"></span>
+    </div>
+
+    <!-- TABLE -->
+    <div class="admin-table-card">
+      <table class="admin-table" aria-label="Supplier partnership signed dates">
+        <thead>
+          <tr>
+            <th>Supplier Name</th>
+            <th>Supplier ID</th>
+            <th>Partnership Signed Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="admin-table-body">
+          <!-- Rows populated by admin.js -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="./mock-data.js"></script>
+  <script src="./admin.js" defer></script>
+
+</body>
+</html>

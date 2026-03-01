@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier Data | Master Electronics</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    /* Page 2 specific layout adjustments */
+    .page-container {
+      padding-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+      <!-- [BRAND] Replace with: <img src="./logo.png" alt="Master Electronics" class="brand-logo"> -->
+      <div class="brand-logo">Master Electronics</div>
+
+      <a href="./index.html" class="btn btn-secondary">
+        &#8592; Supplier Selection
+      </a>
+    </header>
+
+    <!-- SUPPLIER HEADLINE -->
+    <!-- Populated by supplier.js. Hidden via opacity until data loads. -->
+    <h1
+      id="supplier-headline"
+      class="supplier-headline"
+      aria-live="polite"
+      style="opacity: 0; transition: opacity 0.4s ease;"
+    ></h1>
+
+    <!-- 2×2 METRICS GRID -->
+    <div class="metrics-grid">
+
+      <!-- BOX 1: Top 5 Branches -->
+      <div class="glass-card">
+        <p class="card-title">Top 5 Branches</p>
+        <ol id="top-branches-list" class="branches-list" aria-label="Top 5 branches by revenue">
+          <!-- Populated by supplier.js -->
+        </ol>
+      </div>
+
+      <!-- BOX 2: SKU Count -->
+      <div class="glass-card">
+        <p class="card-title">SKU Count</p>
+        <div class="sku-display">
+          <div id="sku-count" class="metric-large-number" aria-label="SKU count">
+            <!-- Populated by supplier.js -->
+          </div>
+          <p class="metric-unit">Active SKUs &nbsp;·&nbsp; Prior Day Snapshot</p>
+        </div>
+      </div>
+
+      <!-- BOX 3: Revenue Split by Region -->
+      <div class="glass-card">
+        <p class="card-title">Revenue Split by Region</p>
+        <div id="region-split" class="split-list" aria-label="Revenue split by region">
+          <!-- Populated by supplier.js -->
+        </div>
+      </div>
+
+      <!-- BOX 4: Online vs Traditional Split -->
+      <div class="glass-card">
+        <p class="card-title">Channel Split</p>
+        <div id="channel-split" class="split-list" aria-label="Online vs Traditional channel split">
+          <!-- Populated by supplier.js -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- REAL-TIME: Active Lines in Process -->
+    <!-- Hidden when count = 0 or query fails. NO placeholder or zero shown. -->
+    <div
+      id="realtime-bar"
+      class="realtime-bar"
+      aria-live="polite"
+      aria-label="Active order lines in process"
+    >
+      <div class="realtime-pulse">
+        <div class="realtime-pulse-ring"></div>
+        <div class="realtime-pulse-dot"></div>
+      </div>
+      <span class="realtime-label">Active Lines in Process</span>
+      <span id="realtime-count" class="realtime-count"></span>
+      <span class="realtime-sublabel">Phoenix DC &nbsp;·&nbsp; Packer Out Status &nbsp;·&nbsp; Live</span>
+    </div>
+
+  </div>
+
+  <!-- ERROR MODAL: shown if batch data fails to load -->
+  <div
+    id="error-modal"
+    class="modal-backdrop"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="error-modal-title"
+  >
+    <div class="modal-box">
+      <div class="modal-icon">&#9888;&#65039;</div>
+      <h2 class="modal-title" id="error-modal-title">Data Unavailable</h2>
+      <p class="modal-body">
+        No data available. Please refresh or try again.
+      </p>
+      <div class="modal-actions">
+        <a href="./index.html" class="btn btn-secondary">&#8592; Back to Selection</a>
+        <button onclick="window.location.reload()" class="btn btn-primary">Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: config and data must load before supplier.js runs -->
+  <script src="./config.js"></script>
+  <script src="./mock-data.js"></script>
+  <script src="./supplier.js" defer></script>
+
+</body>
+</html>
